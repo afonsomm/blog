@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  },
+  {
+    "objectID": "posts/pandas-tests/code.html",
+    "href": "posts/pandas-tests/code.html",
+    "title": "Pandas Tests",
+    "section": "",
+    "text": "df = pd.DataFrame(range(1000000))\n\n%timeit for _, row in df.iterrows(): ...\n%timeit for row in df.itertuples(): ...\n%timeit df.apply(lambda x: None, axis=1)\n\n20.7 s ± 425 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)\n357 ms ± 21.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)\n1.87 s ± 31.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)\n\n\n\nitertuples() is the faster way to iterate over the rows of a DF."
+  },
+  {
+    "objectID": "posts/pandas-tests/code.html#iterating-over-rows",
+    "href": "posts/pandas-tests/code.html#iterating-over-rows",
+    "title": "Pandas Tests",
+    "section": "",
+    "text": "df = pd.DataFrame(range(1000000))\n\n%timeit for _, row in df.iterrows(): ...\n%timeit for row in df.itertuples(): ...\n%timeit df.apply(lambda x: None, axis=1)\n\n20.7 s ± 425 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)\n357 ms ± 21.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)\n1.87 s ± 31.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)\n\n\n\nitertuples() is the faster way to iterate over the rows of a DF."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Pandas Tests\n\n\nBackup of tests with the Pandas data manipulation tool.\n\n\n\nTests\n\n\n\n\n\n\nAfonso Matoso Magalhães\n\n\n\n\n\n\nNo matching items"
+  }
+]
