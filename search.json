@@ -7,62 +7,6 @@
     "text": "About this blog"
   },
   {
-    "objectID": "posts/spark/code.html",
-    "href": "posts/spark/code.html",
-    "title": "Spark",
-    "section": "",
-    "text": "MapReduce and its variants have been highly successful in implementing large-scale data-intensive applications on commodity clusters. However, most of these systems are built around an acyclic data flow model that is not suitable for other popular applications. This paper focuses on one such class of applications: those that reuse a working set of data across multiple parallel operations.\nThis includes two use cases where we have seen Hadoop users report that MapReduce is deficient:\n\nIterative jobs: Many common machine learning algorithms apply a function repeatedly to the same dataset to optimize a parameter (e.g., through gradient descent). While each iteration can be expressed as aMapReduce/Dryad job, each job must reload the data from disk, incurring a significant performance penalty.\nInteractive analytics: Hadoop is often used to run ad-hoc exploratory queries on large datasets, through SQL interfaces such as Pig and Hive. Ideally, a user would be able to load a dataset of interest into memory across a number of machines and query it repeatedly. However, with Hadoop, each query incurs significant latency (tens of seconds) because it runs as a separate MapReduce job and reads data from disk.\n\nThe main abstraction in Spark is that of a resilient distributed dataset (RDD), which represents a read-only collection of objects partitioned across a set of machines that can be rebuilt if a partition is lost. Users can explicitly cache an RDD in memory across machines and reuse it in multiple MapReduce-like parallel operations. RDDs achieve fault tolerance trough a notion of lineage: if a partition of an RDD is lost, the RDD has enough information about how it was derived from other RDDs to be able to rebuild just that partition.\nSpark provides two main abstractions for parallel programming: resilient distributed datasets and parallel operations on these datasets."
-  },
-  {
-    "objectID": "posts/spark/code.html#overview",
-    "href": "posts/spark/code.html#overview",
-    "title": "Spark",
-    "section": "",
-    "text": "MapReduce and its variants have been highly successful in implementing large-scale data-intensive applications on commodity clusters. However, most of these systems are built around an acyclic data flow model that is not suitable for other popular applications. This paper focuses on one such class of applications: those that reuse a working set of data across multiple parallel operations.\nThis includes two use cases where we have seen Hadoop users report that MapReduce is deficient:\n\nIterative jobs: Many common machine learning algorithms apply a function repeatedly to the same dataset to optimize a parameter (e.g., through gradient descent). While each iteration can be expressed as aMapReduce/Dryad job, each job must reload the data from disk, incurring a significant performance penalty.\nInteractive analytics: Hadoop is often used to run ad-hoc exploratory queries on large datasets, through SQL interfaces such as Pig and Hive. Ideally, a user would be able to load a dataset of interest into memory across a number of machines and query it repeatedly. However, with Hadoop, each query incurs significant latency (tens of seconds) because it runs as a separate MapReduce job and reads data from disk.\n\nThe main abstraction in Spark is that of a resilient distributed dataset (RDD), which represents a read-only collection of objects partitioned across a set of machines that can be rebuilt if a partition is lost. Users can explicitly cache an RDD in memory across machines and reuse it in multiple MapReduce-like parallel operations. RDDs achieve fault tolerance trough a notion of lineage: if a partition of an RDD is lost, the RDD has enough information about how it was derived from other RDDs to be able to rebuild just that partition.\nSpark provides two main abstractions for parallel programming: resilient distributed datasets and parallel operations on these datasets."
-  },
-  {
-    "objectID": "posts/spark/code.html#spark-core",
-    "href": "posts/spark/code.html#spark-core",
-    "title": "Spark",
-    "section": "Spark Core",
-    "text": "Spark Core\n\nRDDs\n\nConstruct RDDs in four ways:\n\nFrom a file in a shared file system, such as the Hadoop Distributed File System (HDFS).\nBy “parallelizing” a Scala collection (e.g., an array).\nBy transforming an existing RDD.\nBy changing the persistence of an existing RDD. RDDs are lazy and ephemeral. That is, partitions of a dataset are materialized on demand when they are used in a parallel operation and are discarded from memory after use. A user can alter the persistence of an RDD through two actions: - The cache action leaves the dataset lazy, but hints that it should be kept in memory after the first time it is computed, because it will be reused. - The save action evaluates the dataset and writes it to a distributed filesystem such as HDFS.\n\nWe note that our cache action is only a hint: if there is not enough memory in the cluster to cache all partitions of a dataset, Spark will recompute them when they are used. We chose this design so that Spark programs keep working (at reduced performance) if nodes fail or if a dataset is too big. We also to support other levels of persistence (e.g., in-memory replication across multiple nodes).\n\n\n\nParallel Operations\n\nWe note that Spark does not currently support a grouped reduce operation as in MapReduce; reduce results are only collected at one process (the driver). Local reductions are first performed at each node, however. We plan to support grouped reductions in the future using “shuffle” transformation on distributed datasets.\n\n\n\nShared Variables\n\nProgrammers invoke operations like map, filter and reduce by passing closures (functions) to Spark. As is typical in functional programming, these closures can refer to variables in the scope where they are created. Normally, when Spark runs a closure on a worker node, these variables are copied to the worker. However, Spark also lets programmers create two restricted types of shared variables to support two simple but common usage patterns:\n\nBroadcast variables: If a large read.only piece of data (e.g., a lookup table) is used in multiple parallel operations, it is preferable to distribute it to the workers only once instead of packaging it with every closure. Spark lets the programmer create a “broadcast variable” object that wraps the value and ensures that it is only copied to each worker once.\nAccumulators: These are variables that workers can only “add” to using an associative operation, and that only the driver can read. They can be used to implement counters as in MapReduce and to provide a more imperative syntax for parallel sums. Accumulators can be defined for any type that has an “add” operation and a “zero” value. Due to their “add-only” semantics, they are easy to make fault-tolerant.\n\n\n\n\nExamples\n\nText Search\n\nWe first create a distributed dataset called file that represents the HDFS file as a collection of lines. We transform this dataset to create the set of lines containing “ERROR” (errs), and then map each line to a 1 and add up these ones using reduce. The arguments to filter, map and reduce are Scala syntax for function literals.\nNote that that are never materialized. Instead, when reduce is called, each worker node scans input blocks in a streaming manner to evaluate ones, adds these to perform a local reduce, and sends its local count to the driver.\nWhere Spark differs from other frameworks is that it can make some of the intermediate datasets persist across operations. We would now be able to invoke parallel operations on cachedErrs or on datasets derived from it as usual, but nodes would cache partitions of cachedErrs in memory after the first time they compute them, greatly speeding up subsequent operations on it.\n\n\n\nLogistic Regression"
-  },
-  {
-    "objectID": "posts/spark/code.html#rdds-1",
-    "href": "posts/spark/code.html#rdds-1",
-    "title": "Spark",
-    "section": "RDDs",
-    "text": "RDDs"
-  },
-  {
-    "objectID": "posts/spark/code.html#sql",
-    "href": "posts/spark/code.html#sql",
-    "title": "Spark",
-    "section": "SQL",
-    "text": "SQL"
-  },
-  {
-    "objectID": "posts/spark/code.html#ml",
-    "href": "posts/spark/code.html#ml",
-    "title": "Spark",
-    "section": "ML",
-    "text": "ML"
-  },
-  {
-    "objectID": "posts/spark/code.html#dstreams",
-    "href": "posts/spark/code.html#dstreams",
-    "title": "Spark",
-    "section": "DStreams",
-    "text": "DStreams"
-  },
-  {
-    "objectID": "posts/spark/code.html#structured-streaming",
-    "href": "posts/spark/code.html#structured-streaming",
-    "title": "Spark",
-    "section": "Structured Streaming",
-    "text": "Structured Streaming"
-  },
-  {
     "objectID": "posts/pandas-tests/code.html",
     "href": "posts/pandas-tests/code.html",
     "title": "Pandas Tests",
@@ -88,6 +32,6 @@
     "href": "index.html",
     "title": "Blog",
     "section": "",
-    "text": "Pandas Tests\n\n\nBackup of tests with the Pandas data manipulation tool.\n\n\n\nTests\n\n\n\n\n\n\nAfonso Matoso Magalhães\n\n\n\n\n\n\n\n\n\n\n\n\nfastai: Image Classifier\n\n\nApplication of the fastai library to the MNIST dataset.\n\n\n\ndeep learning\n\n\nimage classification\n\n\n\n\n\n\nAfonso Matoso Magalhães\n\n\n\n\n\n\n\n\n\n\n\n\nSpark\n\n\nSimple and practical explanation of Spark.\n\n\n\nExplanation\n\n\n\n\n\n\nAfonso Matoso Magalhães\n\n\n\n\n\n\nNo matching items"
+    "text": "Pandas Tests\n\n\nBackup of tests with the Pandas data manipulation tool.\n\n\n\nTests\n\n\n\n\n\n\nAfonso Matoso Magalhães\n\n\n\n\n\n\n\n\n\n\n\n\nfastai: Image Classifier\n\n\nApplication of the fastai library to the MNIST dataset.\n\n\n\ndeep learning\n\n\nimage classification\n\n\n\n\n\n\nAfonso Matoso Magalhães\n\n\n\n\n\n\nNo matching items"
   }
 ]
