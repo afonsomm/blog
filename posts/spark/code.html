@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Afonso Matoso Magalhães">
 
-<title>Afonso Matoso Magalhães - Blog</title>
+<title>Afonso Matoso Magalhães - Spark</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +24,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +67,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-image','listing-date-modified','listing-title','listing-subtitle','listing-categories','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Afonso Matoso Magalhães</span>
     </a>
   </div>
@@ -149,7 +90,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -170,129 +111,150 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Spark</h1>
+            <p class="subtitle lead">Simple and practical explanation of Spark.</p>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Explanation</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Afonso Matoso Magalhães </p>
+            </div>
+    </div>
+      
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">March 7, 2024</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Explanation">Explanation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Tests">Tests <span class="quarto-category-count">(1)</span></div><div class="category" data-category="deep learning">deep learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="image classification">image classification <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#spark-core" id="toc-spark-core" class="nav-link" data-scroll-target="#spark-core">Spark Core</a>
+  <ul class="collapse">
+  <li><a href="#rdds" id="toc-rdds" class="nav-link" data-scroll-target="#rdds">RDDs</a></li>
+  <li><a href="#parallel-operations" id="toc-parallel-operations" class="nav-link" data-scroll-target="#parallel-operations">Parallel Operations</a></li>
+  <li><a href="#shared-variables" id="toc-shared-variables" class="nav-link" data-scroll-target="#shared-variables">Shared Variables</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
+  <li><a href="#rdds-1" id="toc-rdds-1" class="nav-link" data-scroll-target="#rdds-1">RDDs</a></li>
+  <li><a href="#sql" id="toc-sql" class="nav-link" data-scroll-target="#sql">SQL</a></li>
+  <li><a href="#ml" id="toc-ml" class="nav-link" data-scroll-target="#ml">ML</a></li>
+  <li><a href="#dstreams" id="toc-dstreams" class="nav-link" data-scroll-target="#dstreams">DStreams</a></li>
+  <li><a href="#structured-streaming" id="toc-structured-streaming" class="nav-link" data-scroll-target="#structured-streaming">Structured Streaming</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
-
-
-
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<ul>
+<li><p>MapReduce and its variants have been highly successful in implementing large-scale data-intensive applications on commodity clusters. However, most of these systems are built around an acyclic data flow model that is not suitable for other popular applications. This paper focuses on one such class of applications: those that reuse a working set of data across multiple parallel operations.</p></li>
+<li><p>This includes two use cases where we have seen Hadoop users report that MapReduce is deficient:</p>
+<ul>
+<li>Iterative jobs: Many common machine learning algorithms apply a function repeatedly to the same dataset to optimize a parameter (e.g., through gradient descent). While each iteration can be expressed as aMapReduce/Dryad job, each job must reload the data from disk, incurring a significant performance penalty.</li>
+<li>Interactive analytics: Hadoop is often used to run ad-hoc exploratory queries on large datasets, through SQL interfaces such as Pig and Hive. Ideally, a user would be able to load a dataset of interest into memory across a number of machines and query it repeatedly. However, with Hadoop, each query incurs significant latency (tens of seconds) because it runs as a separate MapReduce job and reads data from disk.</li>
+</ul></li>
+<li><p>The main abstraction in Spark is that of a resilient distributed dataset (RDD), which represents a read-only collection of objects partitioned across a set of machines that can be rebuilt if a partition is lost. Users can explicitly cache an RDD in memory across machines and reuse it in multiple MapReduce-like parallel operations. RDDs achieve fault tolerance trough a notion of lineage: if a partition of an RDD is lost, the RDD has enough information about how it was derived from other RDDs to be able to rebuild just that partition.</p></li>
+<li><p>Spark provides two main abstractions for parallel programming: resilient distributed datasets and parallel operations on these datasets.</p></li>
+</ul>
+</section>
+<section id="spark-core" class="level2">
+<h2 class="anchored" data-anchor-id="spark-core">Spark Core</h2>
+<section id="rdds" class="level3">
+<h3 class="anchored" data-anchor-id="rdds">RDDs</h3>
+<ul>
+<li>Construct RDDs in four ways:
+<ul>
+<li>From a file in a shared file system, such as the Hadoop Distributed File System (HDFS).</li>
+<li>By “parallelizing” a Scala collection (e.g., an array).</li>
+<li>By transforming an existing RDD.</li>
+<li>By changing the persistence of an existing RDD. RDDs are lazy and ephemeral. That is, partitions of a dataset are materialized on demand when they are used in a parallel operation and are discarded from memory after use. A user can alter the persistence of an RDD through two actions: - The cache action leaves the dataset lazy, but hints that it should be kept in memory after the first time it is computed, because it will be reused. - The save action evaluates the dataset and writes it to a distributed filesystem such as HDFS.</li>
+</ul></li>
+<li>We note that our cache action is only a hint: if there is not enough memory in the cluster to cache all partitions of a dataset, Spark will recompute them when they are used. We chose this design so that Spark programs keep working (at reduced performance) if nodes fail or if a dataset is too big. We also to support other levels of persistence (e.g., in-memory replication across multiple nodes).</li>
+</ul>
+</section>
+<section id="parallel-operations" class="level3">
+<h3 class="anchored" data-anchor-id="parallel-operations">Parallel Operations</h3>
+<ul>
+<li>We note that Spark does not currently support a grouped reduce operation as in MapReduce; reduce results are only collected at one process (the driver). Local reductions are first performed at each node, however. We plan to support grouped reductions in the future using “shuffle” transformation on distributed datasets.</li>
+</ul>
+</section>
+<section id="shared-variables" class="level3">
+<h3 class="anchored" data-anchor-id="shared-variables">Shared Variables</h3>
+<ul>
+<li>Programmers invoke operations like map, filter and reduce by passing closures (functions) to Spark. As is typical in functional programming, these closures can refer to variables in the scope where they are created. Normally, when Spark runs a closure on a worker node, these variables are copied to the worker. However, Spark also lets programmers create two restricted types of shared variables to support two simple but common usage patterns:
+<ul>
+<li>Broadcast variables: If a large read.only piece of data (e.g., a lookup table) is used in multiple parallel operations, it is preferable to distribute it to the workers only once instead of packaging it with every closure. Spark lets the programmer create a “broadcast variable” object that wraps the value and ensures that it is only copied to each worker once.</li>
+<li>Accumulators: These are variables that workers can only “add” to using an associative operation, and that only the driver can read. They can be used to implement counters as in MapReduce and to provide a more imperative syntax for parallel sums. Accumulators can be defined for any type that has an “add” operation and a “zero” value. Due to their “add-only” semantics, they are easy to make fault-tolerant.</li>
+</ul></li>
+</ul>
+</section>
+<section id="examples" class="level3">
+<h3 class="anchored" data-anchor-id="examples">Examples</h3>
+<section id="text-search" class="level5">
+<h5 class="anchored" data-anchor-id="text-search">Text Search</h5>
+<ul>
+<li>We first create a distributed dataset called file that represents the HDFS file as a collection of lines. We transform this dataset to create the set of lines containing “ERROR” (errs), and then map each line to a 1 and add up these ones using reduce. The arguments to filter, map and reduce are Scala syntax for function literals.</li>
+<li>Note that that are never materialized. Instead, when reduce is called, each worker node scans input blocks in a streaming manner to evaluate ones, adds these to perform a local reduce, and sends its local count to the driver.</li>
+<li>Where Spark differs from other frameworks is that it can make some of the intermediate datasets persist across operations. We would now be able to invoke parallel operations on cachedErrs or on datasets derived from it as usual, but nodes would cache partitions of cachedErrs in memory after the first time they compute them, greatly speeding up subsequent operations on it.</li>
+</ul>
+</section>
+<section id="logistic-regression" class="level5">
+<h5 class="anchored" data-anchor-id="logistic-regression">Logistic Regression</h5>
+<ul>
+<li></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="rdds-1" class="level2">
+<h2 class="anchored" data-anchor-id="rdds-1">RDDs</h2>
+</section>
+<section id="sql" class="level2">
+<h2 class="anchored" data-anchor-id="sql">SQL</h2>
+</section>
+<section id="ml" class="level2">
+<h2 class="anchored" data-anchor-id="ml">ML</h2>
+</section>
+<section id="dstreams" class="level2">
+<h2 class="anchored" data-anchor-id="dstreams">DStreams</h2>
+</section>
+<section id="structured-streaming" class="level2">
+<h2 class="anchored" data-anchor-id="structured-streaming">Structured Streaming</h2>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Tests" data-listing-file-modified-sort="1710421434777" data-listing-reading-time-sort="1" data-listing-word-count-sort="53">
-<div class="thumbnail">
-<p><a href="./posts/pandas-tests/code.html" class="no-external"></a></p><a href="./posts/pandas-tests/code.html" class="no-external">
-<p><img src="./posts/pandas-tests/pandas-logo.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/pandas-tests/code.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/pandas-tests/code.html" class="no-external">Pandas Tests</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/pandas-tests/code.html" class="no-external">Backup of tests with the Pandas data manipulation tool.</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Tests'); return false;">
-Tests
-</div>
-</div>
-</div>
-<div class="metadata">
-<p><a href="./posts/pandas-tests/code.html" class="no-external"></a></p><a href="./posts/pandas-tests/code.html" class="no-external">
-<div class="listing-author">
-Afonso Matoso Magalhães
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="deep learning,image classification" data-listing-file-modified-sort="1710425082661" data-listing-reading-time-sort="1" data-listing-word-count-sort="187">
-<div class="thumbnail">
-<p><a href="./posts/fastai-img-classif/code.html" class="no-external"></a></p><a href="./posts/fastai-img-classif/code.html" class="no-external">
-<p><img src="./posts/fastai-img-classif/logo.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/fastai-img-classif/code.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/fastai-img-classif/code.html" class="no-external">fastai: Image Classifier</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/fastai-img-classif/code.html" class="no-external">Application of the fastai library to the MNIST dataset.</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('deep learning'); return false;">
-deep learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('image classification'); return false;">
-image classification
-</div>
-</div>
-</div>
-<div class="metadata">
-<p><a href="./posts/fastai-img-classif/code.html" class="no-external"></a></p><a href="./posts/fastai-img-classif/code.html" class="no-external">
-<div class="listing-author">
-Afonso Matoso Magalhães
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="Explanation" data-listing-file-modified-sort="1709841250767" data-listing-reading-time-sort="5" data-listing-word-count-sort="975">
-<div class="thumbnail">
-<p><a href="./posts/spark/code.html" class="no-external"></a></p><a href="./posts/spark/code.html" class="no-external">
-<p><img src="./posts/spark/spark-logo.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/spark/code.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/spark/code.html" class="no-external">Spark</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/spark/code.html" class="no-external">Simple and practical explanation of Spark.</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Explanation'); return false;">
-Explanation
-</div>
-</div>
-</div>
-<div class="metadata">
-<p><a href="./posts/spark/code.html" class="no-external"></a></p><a href="./posts/spark/code.html" class="no-external">
-<div class="listing-author">
-Afonso Matoso Magalhães
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
