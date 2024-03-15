@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Afonso Matoso Magalhães - Introduction to image classification using camera trap images</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../../../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../../index.html">
+    <span class="navbar-title">Afonso Matoso Magalhães</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:afonsomm98@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Introduction to image classification using camera trap images</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction-to-image-classification-using-camera-trap-images" class="level1">
+<h1>Introduction to image classification using camera trap images</h1>
+<p>Camera traps are a tool used by conservationists to study and monitor a wide range of ecologies while limiting human interference. However, they also generate a vast amount of data that quickly exceeds the capacity of humans to sift through. That’s where machine learning can help! Advances in computer vision can help automate tasks like species detection and identification, so that humans can spend more time learning from and protecting these ecologies.</p>
+<p>This post walks through an initial approach for the <a href="https://www.drivendata.org/competitions/87/competition-image-classification-wildlife-conservation/">Conservision Practice Area</a> challenge on DrivenData, a practice competition where you identify animal species in a real world dataset of wildlife images from <a href="https://en.wikipedia.org/wiki/Ta%C3%AF_National_Park">Tai National Park</a> in Côte d’Ivoire. This is a practice competition designed to be accessible to participants at all levels. That makes it a great place to dive into the world of data science competitions and computer vision.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://drivendata-public-assets.s3.amazonaws.com/conservision-leopard-collage.jpg" class="img-fluid figure-img"></p>
+<figcaption>camera trap images</figcaption>
+</figure>
+</div>
+<p>We will go through the following steps in order to train a PyTorch model that can be used to identify the species of animal in a given image: 1. Set up your environment (feel free to skip) 2. Download the data 3. Explore the data 4. Split into train and evaluation sets 5. Build the Model 6. Training 7. Evaluation 8. Create submission</p>
+<p>The only pre-requisite is a basic familiarity with Python and some of the basic concepts behind deep learning. We’ll guide you step-by-step through the rest.</p>
+<p>Let’s get started!</p>
+<section id="set-up-your-environment" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-your-environment">1. Set up your environment</h2>
+<p>Feel free to skip this step if you already have an environment set up.</p>
+<p>The folks on our team typically use conda to manage environments. Once you have <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html">conda installed</a> you can create a new “conserviz” environment (name it whatever you like) with:</p>
+<pre><code>conda create -n conserviz python=3.8</code></pre>
+<p>Then we activate the new environment and install the required libraries with pip. The pip command below includes all the libraries we’ll need for this notebook. Launch a jupyter notebook from this new environment.</p>
+<pre><code>conda activate conserviz
+pip install pandas matplotlib Pillow tqdm scikit-learn torch torchvision</code></pre>
+</section>
+<section id="download-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="download-the-data">2. Download the data</h2>
+<p>Download the competition data from the <a href="https://www.drivendata.org/competitions/87/competition-image-classification-wildlife-conservation/data/">Data Download</a> page. You’ll need to first register for the competition by clicking on “Compete” and agreeing to the rules.</p>
+<p>The <code>competition.zip</code> file contains everything you need to take part in this competition, including this notebook <code>benchmark.ipynb</code>. Unzip the archive into a location of your choice. The file structure should look like this:</p>
+<pre><code>├── benchmark.ipynb
+├── submission_format.csv
+├── test_features
+│   ├── ZJ000000.jpg
+│   ├── ZJ000001.jpg
+│   └── ...
+├── test_features.csv
+├── train_features
+│   ├── ZJ016488.jpg
+│   ├── ZJ016489.jpg
+│   └── ...
+├── train_features.csv
+└── train_labels.csv</code></pre>
+<p>Next, let’s import some of the usual suspects:</p>
+<div id="cell-5" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Read in the train and test CSVs first and see what they look like.</p>
+<div id="cell-7" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>train_features <span class="op">=</span> pd.read_csv(<span class="st">"train_features.csv"</span>, index_col<span class="op">=</span><span class="st">"id"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>test_features <span class="op">=</span> pd.read_csv(<span class="st">"test_features.csv"</span>, index_col<span class="op">=</span><span class="st">"id"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>train_labels <span class="op">=</span> pd.read_csv(<span class="st">"train_labels.csv"</span>, index_col<span class="op">=</span><span class="st">"id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>features</code> CSVs contain the image ID, filepath and site ID for each image.</p>
+<div id="cell-9" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>train_features.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">filepath</th>
+<th data-quarto-table-cell-role="th">site</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ000000</td>
+<td>train_features/ZJ000000.jpg</td>
+<td>S0120</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ000001</td>
+<td>train_features/ZJ000001.jpg</td>
+<td>S0069</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ000002</td>
+<td>train_features/ZJ000002.jpg</td>
+<td>S0009</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ000003</td>
+<td>train_features/ZJ000003.jpg</td>
+<td>S0008</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ000004</td>
+<td>train_features/ZJ000004.jpg</td>
+<td>S0036</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="cell-10" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>test_features.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">filepath</th>
+<th data-quarto-table-cell-role="th">site</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ016488</td>
+<td>test_features/ZJ016488.jpg</td>
+<td>S0082</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ016489</td>
+<td>test_features/ZJ016489.jpg</td>
+<td>S0040</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ016490</td>
+<td>test_features/ZJ016490.jpg</td>
+<td>S0040</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ016491</td>
+<td>test_features/ZJ016491.jpg</td>
+<td>S0041</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ016492</td>
+<td>test_features/ZJ016492.jpg</td>
+<td>S0040</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>The <code>train_labels</code> CSV is an indicator matrix of the species identified in each of the training images. Some images are labeled as “blank” if no animal was detected.</p>
+<div id="cell-12" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>train_labels.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">antelope_duiker</th>
+<th data-quarto-table-cell-role="th">bird</th>
+<th data-quarto-table-cell-role="th">blank</th>
+<th data-quarto-table-cell-role="th">civet_genet</th>
+<th data-quarto-table-cell-role="th">hog</th>
+<th data-quarto-table-cell-role="th">leopard</th>
+<th data-quarto-table-cell-role="th">monkey_prosimian</th>
+<th data-quarto-table-cell-role="th">rodent</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ000000</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ000001</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ000002</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ000003</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ000004</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Let’s store a sorted list of the labels, so that we can sort the inputs and outputs to our model in a consistent way.</p>
+<div id="cell-14" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>species_labels <span class="op">=</span> <span class="bu">sorted</span>(train_labels.columns.unique())</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>species_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>['antelope_duiker',
+ 'bird',
+ 'blank',
+ 'civet_genet',
+ 'hog',
+ 'leopard',
+ 'monkey_prosimian',
+ 'rodent']</code></pre>
+</div>
+</div>
+</section>
+<section id="explore-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="explore-the-data">3. Explore the data</h2>
+<p>Now let’s see what some of the actual images look like. The code below iterates through a list of species and selects a single random image from each species to display, along with its image ID and label. You can try changing the <code>random_state</code> variable to display a new set of images.</p>
+<div id="cell-17" class="cell" data-tags="[]" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.image <span class="im">as</span> mpimg</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>random_state <span class="op">=</span> <span class="dv">42</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># we'll create a grid with 8 positions, one for each label (7 species, plus blanks)</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">4</span>, ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">20</span>))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate through each species</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> species, ax <span class="kw">in</span> <span class="bu">zip</span>(species_labels, axes.flat):</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get an image ID for this species</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    img_id <span class="op">=</span> (</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        train_labels[train_labels.loc[:,species] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        .sample(<span class="dv">1</span>, random_state<span class="op">=</span>random_state)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        .index[<span class="dv">0</span>]</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reads the filepath and returns a numpy array</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> mpimg.imread(train_features.loc[img_id].filepath)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># plot etc</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    ax.imshow(img)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"</span><span class="sc">{</span>img_id<span class="sc">}</span><span class="ss"> | </span><span class="sc">{</span>species<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="benchmark_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Can you spot the animals? I’m still not sure where the rodent is. Birds can be tough to spot too.</p>
+<p>Let’s look at the distribution of species across the training set, first in terms of overall counts and then in percentage terms.</p>
+<div id="cell-20" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>train_labels.<span class="bu">sum</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>monkey_prosimian    2492.0
+antelope_duiker     2474.0
+civet_genet         2423.0
+leopard             2254.0
+blank               2213.0
+rodent              2013.0
+bird                1641.0
+hog                  978.0
+dtype: float64</code></pre>
+</div>
+</div>
+<div id="cell-21" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>train_labels.<span class="bu">sum</span>().divide(train_labels.shape[<span class="dv">0</span>]).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>monkey_prosimian    0.151140
+antelope_duiker     0.150049
+civet_genet         0.146955
+leopard             0.136705
+blank               0.134219
+rodent              0.122089
+bird                0.099527
+hog                 0.059316
+dtype: float64</code></pre>
+</div>
+</div>
+<p>In case you’re curious, this distribution is not exactly what we find in the wild. The competition dataset has been curated a little bit to produce a more uniform distribution than we would see in the actual data.</p>
+<p>There’s a lot more data exploration to do. For example, you might also want to look at the distribution of image dimensions or camera trap sites. But since our primary goal here is to develop a benchmark, let’s move on to the modeling!</p>
+</section>
+<section id="split-into-train-and-evaluation-sets" class="level2">
+<h2 class="anchored" data-anchor-id="split-into-train-and-evaluation-sets">4. Split into train and evaluation sets</h2>
+<p>First, we’ll need to split the images into train and eval sets. We’ll put aside 25% of the data for evaluation and stratify by the target labels to ensure we have similar relative frequencies of each class in the train and eval sets.</p>
+<p>For the purposes of this benchmark, we’re also going to limit ourselves to a 50% subset of the training data, just so that things run faster. But feel free to adjust <code>frac</code> or remove it entirely if you want to run the training on the full set.</p>
+<div id="cell-25" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>frac <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train_labels.sample(frac<span class="op">=</span>frac, random_state<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> train_features.loc[y.index].filepath.to_frame()</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># note that we are casting the species labels to an indicator/dummy matrix</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>x_train, x_eval, y_train, y_eval <span class="op">=</span> train_test_split(</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    x, y, stratify<span class="op">=</span>y, test_size<span class="op">=</span><span class="fl">0.25</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s what <code>x_train</code> and <code>y_train</code> look like now:</p>
+<div id="cell-27" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>x_train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">filepath</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ002477</td>
+<td>train_features/ZJ002477.jpg</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ012222</td>
+<td>train_features/ZJ012222.jpg</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ013173</td>
+<td>train_features/ZJ013173.jpg</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ000959</td>
+<td>train_features/ZJ000959.jpg</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ008167</td>
+<td>train_features/ZJ008167.jpg</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="cell-28" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>y_train.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">antelope_duiker</th>
+<th data-quarto-table-cell-role="th">bird</th>
+<th data-quarto-table-cell-role="th">blank</th>
+<th data-quarto-table-cell-role="th">civet_genet</th>
+<th data-quarto-table-cell-role="th">hog</th>
+<th data-quarto-table-cell-role="th">leopard</th>
+<th data-quarto-table-cell-role="th">monkey_prosimian</th>
+<th data-quarto-table-cell-role="th">rodent</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ002477</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ012222</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ013173</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ000959</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ008167</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="cell-29" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>x_train.shape, y_train.shape, x_eval.shape, y_eval.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>((6183, 1), (6183, 8), (2061, 1), (2061, 8))</code></pre>
+</div>
+</div>
+<p>Next, let’s validate that our split has resulted in roughly similar relative distributions of species across the train and eval sets (because of how we passed <code>stratify=y</code> above).</p>
+<div id="cell-31" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>split_pcts <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"train"</span>: y_train.idxmax(axis<span class="op">=</span><span class="dv">1</span>).value_counts(normalize<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eval"</span>: y_eval.idxmax(axis<span class="op">=</span><span class="dv">1</span>).value_counts(normalize<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Species percentages by split"</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>(split_pcts.fillna(<span class="dv">0</span>) <span class="op">*</span> <span class="dv">100</span>).astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Species percentages by split</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">train</th>
+<th data-quarto-table-cell-role="th">eval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">monkey_prosimian</td>
+<td>15</td>
+<td>15</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">antelope_duiker</td>
+<td>14</td>
+<td>14</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">civet_genet</td>
+<td>14</td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">blank</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">leopard</td>
+<td>13</td>
+<td>13</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">rodent</td>
+<td>11</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">bird</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">hog</td>
+<td>5</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Good, this looks as expected.</p>
+</section>
+<section id="build-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="build-the-model">5. Build the Model</h2>
+<p>Now we can start building our model.</p>
+<section id="the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="the-dataset">The Dataset</h3>
+<p>First, we’ll create an <code>ImagesDataset</code> class that will define how we access our data and any transformations we might want to apply.</p>
+<p>This new class will inherit from the PyTorch <a href="https://pytorch.org/tutorials/beginner/basics/data_tutorial.html"><code>Dataset</code></a> class, but we’ll also need to define our own <code>__init__</code>, <code>__len__</code> and <code>__getitem__</code> <strong>special methods</strong>: * <strong><code>__init__</code></strong> will instantiate the dataset object with two dataframes: an <code>x_train</code> df containing image IDs and image file paths, and a <code>y_train</code> df containing image IDs and labels. This will run once when we first create the dataset object, e.g.&nbsp;with <code>dataset = ImagesDataset(x_train, y_train)</code>. * <strong><code>__getitem__</code></strong> will define how we access a sample from the data. This method gets called whenever we use an indexing operation like <code>dataset[index]</code>. In this case, whenever accessing a particular image sample (for example, to get the first image we’d do <code>dataset[0]</code>) the following will happen: * look up the image filepath using the index * load the image with <a href="https://pillow.readthedocs.io/en/stable/reference/Image.html"><code>PIL.Image</code></a> * apply some transformations (more on this below) * return a dictionary containing the image ID, the image itself as a Tensor, and a label (if it exists) * <strong><code>__len__</code></strong> simply returns the size of the dataset, which we do by calling <code>len</code> on the input dataframe.</p>
+<div id="cell-36" class="cell" data-tags="[]" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> Dataset</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision <span class="im">import</span> transforms</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ImagesDataset(Dataset):</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reads in an image, transforms pixel values, and serves</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">    a dictionary containing the image id, image tensors, and label.</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x_df, y_df<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.data <span class="op">=</span> x_df</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.label <span class="op">=</span> y_df</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.transform <span class="op">=</span> transforms.Compose(</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>            [</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                transforms.Resize((<span class="dv">224</span>, <span class="dv">224</span>)),</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>                transforms.ToTensor(),</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>                transforms.Normalize(</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>                    mean<span class="op">=</span>(<span class="fl">0.485</span>, <span class="fl">0.456</span>, <span class="fl">0.406</span>), std<span class="op">=</span>(<span class="fl">0.229</span>, <span class="fl">0.224</span>, <span class="fl">0.225</span>)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>                ),</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>            ]</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, index):</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>        image <span class="op">=</span> Image.<span class="bu">open</span>(<span class="va">self</span>.data.iloc[index][<span class="st">"filepath"</span>]).convert(<span class="st">"RGB"</span>)</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>        image <span class="op">=</span> <span class="va">self</span>.transform(image)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        image_id <span class="op">=</span> <span class="va">self</span>.data.index[index]</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if we don't have labels (e.g. for test set) just return the image and image id</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.label <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>            sample <span class="op">=</span> {<span class="st">"image_id"</span>: image_id, <span class="st">"image"</span>: image}</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>            label <span class="op">=</span> torch.tensor(<span class="va">self</span>.label.iloc[index].values, </span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>                                 dtype<span class="op">=</span>torch.<span class="bu">float</span>)</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>            sample <span class="op">=</span> {<span class="st">"image_id"</span>: image_id, <span class="st">"image"</span>: image, <span class="st">"label"</span>: label}</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> sample</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that we are also defining a set of <strong>transformations</strong>, which are defined in the <code>__init__</code> and called in the <code>__getitem__</code> special methods. These are applied to each image before returning it. Here’s what each of those transformations do and why:</p>
+<ul>
+<li><code>transforms.Resize((224, 224))</code> ResNet50 was trained on images of size 224x224 so we resize to the same dimensions here. See <a href="https://pytorch.org/vision/stable/models.html">pytorch docs</a> and the <a href="https://arxiv.org/pdf/1512.03385.pdf">ResNet paper</a>.</li>
+<li><code>transforms.ToTensor()</code> converts the image to a tensor. Since we are passing in a PIL Image at this point, PyTorch can recognize it as an RGB image and will automatically convert the input values which are in the range [0, 255] to a range of [0, 1]. See more from the <a href="https://pytorch.org/vision/main/generated/torchvision.transforms.ToTensor.html">PyTorch docs</a>.</li>
+<li><code>transforms.Normalize(...)</code> normalizes the image tensors using the mean and standard deviation of ImageNet images. Because this transformation was applied to images when training the ResNet model, we want to do the same here with our images. See more from the <a href="https://pytorch.org/vision/stable/models.html">PyTorch docs on pretrained models</a>.</li>
+</ul>
+</section>
+<section id="the-dataloader" class="level3">
+<h3 class="anchored" data-anchor-id="the-dataloader">The DataLoader</h3>
+<p>Next, we need to load the dataset into a dataloader. The <code>DataLoader</code> class lets us iterate through our dataset in batches.</p>
+<div id="cell-39" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> DataLoader</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> ImagesDataset(x_train, y_train)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>train_dataloader <span class="op">=</span> DataLoader(train_dataset, batch_size<span class="op">=</span><span class="dv">32</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The data pieces are now largely in place!</p>
+</section>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">6. Training</h2>
+<p>Now it’s time to start building our model and then training it.</p>
+<p>We’ll use a pretrained ResNet50 model as our backbone. ResNets are one of the more popular networks for image classification tasks. The pretrained model outputs a 2048-dimension embedding, which we will then connect to two more dense layers, with a ReLU and Dropout step in between.</p>
+<p>These final layers, defined in <code>model.fc</code>, are the new “head” of our model, and allow us to transform the image embeddings produced by the pretrained “backbone” into the 8-dimensional output required to learn the species classification task we’re tackling here. Prior to redefining it below, <code>model.fc</code> would be the final, dense layer connecting the 2048-dimension embedding to a 1000-dimension output (corresponding to the 1000 ImageNet classes that the pretrained model was trained on). We will instead prepare the model for the current task by redefining <code>model.fc</code> to produce an 8-dimensional output corresponding to our 8 species classes (including blanks).</p>
+<p>We’ll also add a couple more layers in between. The <code>ReLU</code> layer introduces non-linearity into the model head, in effect activating important features and suppressing noise. And the <code>Dropout</code> layer is a commonly used regularization component that randomly drops some nodes from the previous layer’s outputs (10% of nodes in this case) during each training step, mitigating our risk of overfitting.</p>
+<div id="cell-42" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision.models <span class="im">as</span> models</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> models.resnet50(pretrained<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>model.fc <span class="op">=</span> nn.Sequential(</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    nn.Linear(<span class="dv">2048</span>, <span class="dv">100</span>),  <span class="co"># dense layer takes a 2048-dim input and outputs 100-dim</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    nn.ReLU(inplace<span class="op">=</span><span class="va">True</span>),  <span class="co"># ReLU activation introduces non-linearity</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    nn.Dropout(<span class="fl">0.1</span>),  <span class="co"># common technique to mitigate overfitting</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    nn.Linear(</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">100</span>, <span class="dv">8</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    ),  <span class="co"># final dense layer outputs 8-dim corresponding to our target classes</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="define-our-loss-function" class="level3">
+<h3 class="anchored" data-anchor-id="define-our-loss-function">Define our loss function</h3>
+<p>Cross entropy loss (or log loss) is a commonly used loss function for multi-class (not multi-label) image classification. We’ll use this to compute loss for each training batch and then update our parameters accordingly.</p>
+<div id="cell-44" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> nn.CrossEntropyLoss()</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">0.001</span>, momentum<span class="op">=</span><span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="train-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="train-the-model">Train the model</h3>
+<p>We’re now ready to train our model!</p>
+<p>We’ll start simple and just run it for one epoch, but feel free to run it for more <code>num_epochs</code> if you’ve got the time. We hope to see a decreasing loss as training progresses, which will provide some evidence that the model is learning. Note that we haven’t frozen any weights in the pretrained model, a choice which you may want to revisit and we discuss in a little more detail below.</p>
+<p>For each epoch we’ll iterate through the batches, and for each batch we’ll do the following: 1. Zero out the gradients. PyTorch will sum the gradients from past batches when doing its backward pass, so in order to make sure we are only using the gradients computed for the current batch, we zero out the gradients at the beginning of each batch. 2. Run the forward pass. 3. Compute the loss and track it. 4. Compute our gradients and update our weight parameters.</p>
+<div id="cell-46" class="cell" data-tags="[]" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>tracking_loss <span class="op">=</span> {}</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, num_epochs <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Starting epoch </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># iterate through the dataloader batches. tqdm keeps track of progress.</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> batch_n, batch <span class="kw">in</span> tqdm(</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">enumerate</span>(train_dataloader), total<span class="op">=</span><span class="bu">len</span>(train_dataloader)</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1) zero out the parameter gradients so that gradients from previous batches are not used in this step</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>        optimizer.zero_grad()</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2) run the foward step on this batch of images</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> model(batch[<span class="st">"image"</span>])</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3) compute the loss</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> criterion(outputs, batch[<span class="st">"label"</span>])</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># let's keep track of the loss by epoch and batch</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>        tracking_loss[(epoch, batch_n)] <span class="op">=</span> <span class="bu">float</span>(loss)</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 4) compute our gradients</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>        loss.backward()</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># update our weights</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>        optimizer.step()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Starting epoch 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 194/194 [35:46&lt;00:00, 11.06s/it]</code></pre>
+</div>
+</div>
+<p>Now let’s plot the loss by epoch and batch. The x-axis here is a tuple of <code>(epoch, batch)</code>.</p>
+<div id="cell-48" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>tracking_loss <span class="op">=</span> pd.Series(tracking_loss)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>tracking_loss.plot(alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">"loss"</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>tracking_loss.rolling(center<span class="op">=</span><span class="va">True</span>, min_periods<span class="op">=</span><span class="dv">1</span>, window<span class="op">=</span><span class="dv">10</span>).mean().plot(</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"loss (moving avg)"</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"(Epoch, Batch)"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Loss"</span>)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="benchmark_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Good news, the loss is going down! This is an encouraging start, especially since we haven’t done anything fancy yet.</p>
+</section>
+<section id="save-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="save-the-model">Save the model</h3>
+<p>We have the model loaded in memory already, so we don’t really need to save the model, but it’s often useful to do this so we can use it again later.</p>
+<p>Here’s how:</p>
+<div id="cell-51" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>torch.save(model, <span class="st">"model.pth"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation">7. Evaluation</h2>
+<p>So far, not so bad. We’ve shown an improvement in the loss on the training set, but that tells us little about how our model will do on new data. Let’s reload our saved model and try generating some predictions on the evaluation split we created earlier.</p>
+<div id="cell-53" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>loaded_model <span class="op">=</span> torch.load(<span class="st">"model.pth"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We create the eval dataset and dataloader just like we did earlier with the training dataset and dataloader:</p>
+<div id="cell-55" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>eval_dataset <span class="op">=</span> ImagesDataset(x_eval, y_eval)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>eval_dataloader <span class="op">=</span> DataLoader(eval_dataset, batch_size<span class="op">=</span><span class="dv">32</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="make-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="make-predictions">Make predictions</h3>
+<p>We’ll iterate through the eval dataloader in batches, just like we did for training, but this time we aren’t going to need to compute gradients or update weights. For each batch, we’ll do the following: 1. Run the forward pass to get the model output or logits 2. Apply a softmax function to convert the logits into probability space with range[0,1]. During training, the softmax operation was handled internally by <code>nn.CrossEntropyLoss</code>. We aren’t computing the loss now because we are just doing evaluation, but we still want the predictions to be in the range[0,1]. 3. Store the results in a dataframe for further analysis</p>
+<div id="cell-57" class="cell" data-tags="[]" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>preds_collector <span class="op">=</span> []</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># put the model in eval mode so we don't update any parameters</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># we aren't updating our weights so no need to calculate gradients</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> batch <span class="kw">in</span> tqdm(eval_dataloader, total<span class="op">=</span><span class="bu">len</span>(eval_dataloader)):</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 1) run the forward step</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> model.forward(batch[<span class="st">"image"</span>])</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2) apply softmax so that model outputs are in range [0,1]</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>        preds <span class="op">=</span> nn.functional.softmax(logits, dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3) store this batch's predictions in df</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># note that PyTorch Tensors need to first be detached from their computational graph before converting to numpy arrays</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>        preds_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>            preds.detach().numpy(),</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>            index<span class="op">=</span>batch[<span class="st">"image_id"</span>],</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>            columns<span class="op">=</span>species_labels,</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        preds_collector.append(preds_df)</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>eval_preds_df <span class="op">=</span> pd.concat(preds_collector)</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>eval_preds_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 65/65 [03:59&lt;00:00,  3.68s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">antelope_duiker</th>
+<th data-quarto-table-cell-role="th">bird</th>
+<th data-quarto-table-cell-role="th">blank</th>
+<th data-quarto-table-cell-role="th">civet_genet</th>
+<th data-quarto-table-cell-role="th">hog</th>
+<th data-quarto-table-cell-role="th">leopard</th>
+<th data-quarto-table-cell-role="th">monkey_prosimian</th>
+<th data-quarto-table-cell-role="th">rodent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ005376</td>
+<td>0.171700</td>
+<td>0.192484</td>
+<td>0.176443</td>
+<td>0.009301</td>
+<td>0.030189</td>
+<td>0.065699</td>
+<td>0.318819</td>
+<td>0.035365</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ011044</td>
+<td>0.001978</td>
+<td>0.002307</td>
+<td>0.001948</td>
+<td>0.000101</td>
+<td>0.001681</td>
+<td>0.990360</td>
+<td>0.000906</td>
+<td>0.000719</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ005242</td>
+<td>0.210068</td>
+<td>0.189871</td>
+<td>0.121386</td>
+<td>0.012617</td>
+<td>0.021859</td>
+<td>0.031385</td>
+<td>0.358011</td>
+<td>0.054803</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ004518</td>
+<td>0.238102</td>
+<td>0.253908</td>
+<td>0.109069</td>
+<td>0.008890</td>
+<td>0.023841</td>
+<td>0.037896</td>
+<td>0.283491</td>
+<td>0.044803</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ000101</td>
+<td>0.283641</td>
+<td>0.121174</td>
+<td>0.159294</td>
+<td>0.024840</td>
+<td>0.041801</td>
+<td>0.041539</td>
+<td>0.260422</td>
+<td>0.067289</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ011868</td>
+<td>0.130162</td>
+<td>0.207689</td>
+<td>0.163008</td>
+<td>0.021061</td>
+<td>0.053528</td>
+<td>0.120070</td>
+<td>0.230920</td>
+<td>0.073561</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ002183</td>
+<td>0.247485</td>
+<td>0.180399</td>
+<td>0.125990</td>
+<td>0.009920</td>
+<td>0.018781</td>
+<td>0.022285</td>
+<td>0.352043</td>
+<td>0.043098</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ014186</td>
+<td>0.069278</td>
+<td>0.339674</td>
+<td>0.087901</td>
+<td>0.004488</td>
+<td>0.021389</td>
+<td>0.341253</td>
+<td>0.110601</td>
+<td>0.025416</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ011633</td>
+<td>0.223148</td>
+<td>0.143238</td>
+<td>0.156081</td>
+<td>0.032510</td>
+<td>0.046612</td>
+<td>0.049409</td>
+<td>0.277509</td>
+<td>0.071493</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ001374</td>
+<td>0.006084</td>
+<td>0.005903</td>
+<td>0.006707</td>
+<td>0.000377</td>
+<td>0.004165</td>
+<td>0.968445</td>
+<td>0.006105</td>
+<td>0.002214</td>
+</tr>
+</tbody>
+</table>
+
+<p>2061 rows × 8 columns</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="predicted-labels-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="predicted-labels-distribution">Predicted labels distribution</h3>
+<p>First let’s review the species distribution we saw in the training set.</p>
+<div id="cell-59" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"True labels (training):"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>y_train.idxmax(axis<span class="op">=</span><span class="dv">1</span>).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True labels (training):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>monkey_prosimian    973
+antelope_duiker     925
+civet_genet         896
+blank               860
+leopard             841
+rodent              732
+bird                608
+hog                 348
+dtype: int64</code></pre>
+</div>
+</div>
+<p>Here’s the distribution of our predictions on the eval set.</p>
+<div id="cell-61" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Predicted labels (eval):"</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>eval_preds_df.idxmax(axis<span class="op">=</span><span class="dv">1</span>).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Predicted labels (eval):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>monkey_prosimian    919
+civet_genet         403
+leopard             329
+rodent              132
+blank               122
+antelope_duiker     106
+bird                 48
+hog                   2
+dtype: int64</code></pre>
+</div>
+</div>
+<p>The actual evaluation set is more evenly distributed than our predictions, so we already know there is some room for improvement here.</p>
+<div id="cell-63" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"True labels (eval):"</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>y_eval.idxmax(axis<span class="op">=</span><span class="dv">1</span>).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>True labels (eval):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>monkey_prosimian    325
+antelope_duiker     308
+civet_genet         298
+blank               287
+leopard             280
+rodent              244
+bird                203
+hog                 116
+dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="accuracy">Accuracy</h3>
+<p>Now let’s compute how accurate our model is and compare that against some trivial baseline models. First let’s get the labels with the highest score for each image.</p>
+<div id="cell-65" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>eval_predictions <span class="op">=</span> eval_preds_df.idxmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>eval_predictions.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>ZJ005376    monkey_prosimian
+ZJ011044             leopard
+ZJ005242    monkey_prosimian
+ZJ004518    monkey_prosimian
+ZJ000101     antelope_duiker
+dtype: object</code></pre>
+</div>
+</div>
+<p>Random guessing across 8 classes would yield an accuracy of 12.5% (1/8). But we could construct a slightly better trivial model by always guessing the most common class (“monkey_prosimian” images in this case).</p>
+<p>If we were to always guess that an image is <code>monkey_prosimian</code>, we could achieve accuracy of 15.8%.</p>
+<div id="cell-67" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>eval_true <span class="op">=</span> y_eval.idxmax(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>(eval_true <span class="op">==</span> <span class="st">"monkey_prosimian"</span>).<span class="bu">sum</span>() <span class="op">/</span> <span class="bu">len</span>(eval_predictions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>0.1576904415332363</code></pre>
+</div>
+</div>
+<p>Let’s see how our model compares. We take the species with the highest score for each image (<code>eval_predictions</code>) and compare that to the true labels.</p>
+<div id="cell-69" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>correct <span class="op">=</span> (eval_predictions <span class="op">==</span> eval_true).<span class="bu">sum</span>()</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> correct <span class="op">/</span> <span class="bu">len</span>(eval_predictions)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>accuracy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>0.49199417758369723</code></pre>
+</div>
+</div>
+<p>Our accuracy on the evaluation set is about 50%, which is not a bad start for a very simple first pass and one epoch of training.</p>
+<p>Let’s look at the predictions from another angle.</p>
+<p>We can see from the confusion matrix below that our model does reasonably well on some species, but we have plenty of room for improvement on antelopes, birds, hogs and blanks.</p>
+<div id="cell-72" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> ConfusionMatrixDisplay.from_predictions(</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    y_eval.idxmax(axis<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    eval_preds_df.idxmax(axis<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    ax<span class="op">=</span>ax,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    xticks_rotation<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    colorbar<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="benchmark_files/figure-html/cell-32-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>That’s where you come in! What can you do to improve on this benchmark?</p>
+<p>Here are some ideas you might want to try: * Train on the full training dataset. We’ve only used 50% of the training data so far. * Train for more epochs. We’ve only done 1 so far. * Try another pretrained model. For example, you may have more success with EfficientNet, or another ResNet model with more layers like ResNet152. See what’s available from pytorch <a href="https://pytorch.org/vision/stable/models.html">here</a>. You may also want to review which models are or have been state of the art for image classification tasks, for example on <a href="https://paperswithcode.com/task/image-classification">paperswithcode.com</a>. Keep in mind that different models will require different input and output dimensions, so you’ll need to update how you construct <code>model</code> above. * Experiment with different loss functions. * Experiment with different learning rates or learning rate schedulers. * Add more layers to the model head (<code>model.fc</code>). * You also may want to consider freezing the weights in the backbone model and only training the head (<code>model.fc</code>). If this results in higher accuracy, that suggests the current approach may be overwriting the backbone weights in a problematic way. One approach here would be to train just the model head, and then unfreeze the backbone but train at a lower learning rate. * Training will be much faster using GPUs, but you will need to make some small tweaks to the code. * As you become more comfortable iterating through different versions of the model, you may want to try out <a href="https://www.pytorchlightning.ai/">PyTorch Lightning</a> or <a href="https://lightning-flash.readthedocs.io/en/latest/quickstart.html">Lightning Flash</a>, which build upon PyTorch and eliminate a lot of boilerplate code, in addition to providing a more complete research framework for deep learning problems.</p>
+</section>
+</section>
+<section id="create-submission" class="level2">
+<h2 class="anchored" data-anchor-id="create-submission">8. Create submission</h2>
+<p>Last but not least, we’ll want to participate in the competition and see where we stand on the leaderboard.</p>
+<p>To do this we need to create predictions for the <strong>competition test set</strong> (not the eval set we used above). You don’t have labels for these.</p>
+<p>We’ll create predictions in the same way we did for the <code>eval</code> set, but this time using the <code>test_features</code> we downloaded from the <a href="https://www.drivendata.org/competitions/87/competition-image-classification-wildlife-conservation/data/">competition website</a>.</p>
+<div id="cell-76" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>test_dataset <span class="op">=</span> ImagesDataset(test_features.filepath.to_frame())</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>test_dataloader <span class="op">=</span> DataLoader(test_dataset, batch_size<span class="op">=</span><span class="dv">32</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-77" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>preds_collector <span class="op">=</span> []</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co"># put the model in eval mode so we don't update any parameters</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co"># we aren't updating our weights so no need to calculate gradients</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> batch <span class="kw">in</span> tqdm(test_dataloader, total<span class="op">=</span><span class="bu">len</span>(test_dataloader)):</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># run the forward step</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> model.forward(batch[<span class="st">"image"</span>])</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># apply softmax so that model outputs are in range [0,1]</span></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>        preds <span class="op">=</span> nn.functional.softmax(logits, dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># store this batch's predictions in df</span></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># note that PyTorch Tensors need to first be detached from their computational graph before converting to numpy arrays</span></span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>        preds_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>            preds.detach().numpy(),</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>            index<span class="op">=</span>batch[<span class="st">"image_id"</span>],</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>            columns<span class="op">=</span>species_labels,</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>        preds_collector.append(preds_df)</span>
+<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a>submission_df <span class="op">=</span> pd.concat(preds_collector)</span>
+<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a>submission_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 140/140 [09:19&lt;00:00,  4.00s/it]</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">antelope_duiker</th>
+<th data-quarto-table-cell-role="th">bird</th>
+<th data-quarto-table-cell-role="th">blank</th>
+<th data-quarto-table-cell-role="th">civet_genet</th>
+<th data-quarto-table-cell-role="th">hog</th>
+<th data-quarto-table-cell-role="th">leopard</th>
+<th data-quarto-table-cell-role="th">monkey_prosimian</th>
+<th data-quarto-table-cell-role="th">rodent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ016488</td>
+<td>0.040287</td>
+<td>0.016456</td>
+<td>0.069033</td>
+<td>0.639093</td>
+<td>0.018142</td>
+<td>0.018959</td>
+<td>0.015982</td>
+<td>0.182047</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ016489</td>
+<td>0.257348</td>
+<td>0.117252</td>
+<td>0.138006</td>
+<td>0.024684</td>
+<td>0.049720</td>
+<td>0.057412</td>
+<td>0.294213</td>
+<td>0.061365</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ016490</td>
+<td>0.242068</td>
+<td>0.075779</td>
+<td>0.177219</td>
+<td>0.098522</td>
+<td>0.061314</td>
+<td>0.060584</td>
+<td>0.160722</td>
+<td>0.123793</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ016491</td>
+<td>0.009359</td>
+<td>0.010228</td>
+<td>0.009832</td>
+<td>0.000861</td>
+<td>0.008720</td>
+<td>0.952021</td>
+<td>0.005001</td>
+<td>0.003978</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ016492</td>
+<td>0.242449</td>
+<td>0.117502</td>
+<td>0.119074</td>
+<td>0.007304</td>
+<td>0.017310</td>
+<td>0.022663</td>
+<td>0.443947</td>
+<td>0.029752</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ020947</td>
+<td>0.176772</td>
+<td>0.180421</td>
+<td>0.153451</td>
+<td>0.008706</td>
+<td>0.040353</td>
+<td>0.151517</td>
+<td>0.258835</td>
+<td>0.029944</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ020948</td>
+<td>0.270863</td>
+<td>0.149436</td>
+<td>0.135711</td>
+<td>0.009466</td>
+<td>0.028289</td>
+<td>0.054232</td>
+<td>0.311244</td>
+<td>0.040758</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ020949</td>
+<td>0.072901</td>
+<td>0.022102</td>
+<td>0.097448</td>
+<td>0.489528</td>
+<td>0.043097</td>
+<td>0.028081</td>
+<td>0.024680</td>
+<td>0.222163</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ZJ020950</td>
+<td>0.167972</td>
+<td>0.235275</td>
+<td>0.123283</td>
+<td>0.008515</td>
+<td>0.028146</td>
+<td>0.047482</td>
+<td>0.340371</td>
+<td>0.048957</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">ZJ020951</td>
+<td>0.002522</td>
+<td>0.006116</td>
+<td>0.004133</td>
+<td>0.000110</td>
+<td>0.002457</td>
+<td>0.980648</td>
+<td>0.003158</td>
+<td>0.000856</td>
+</tr>
+</tbody>
+</table>
+
+<p>4464 rows × 8 columns</p>
+</div>
+</div>
+</div>
+</div>
+<p>Let’s check a couple things on <code>submission_df</code> before submitting to the platform. We’ll want to make sure our submission’s index and column labels match the submission format. (The DrivenData platform will do these data integrity checks as well, but it will be quicker to detect problems this way.)</p>
+<div id="cell-79" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>submission_format <span class="op">=</span> pd.read_csv(<span class="st">"submission_format.csv"</span>, index_col<span class="op">=</span><span class="st">"id"</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">all</span>(submission_df.index <span class="op">==</span> submission_format.index)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> <span class="bu">all</span>(submission_df.columns <span class="op">==</span> submission_format.columns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Looks like we’re ready to submit! Save the dataframe out to a CSV file and then upload it via the <a href="https://www.drivendata.org/competitions/87/competition-image-classification-wildlife-conservation/submissions/">Submissions page</a> on the competition website.</p>
+<div id="cell-81" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>submission_df.to_csv(<span class="st">"submission_df.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>How did we do? We should get a score of ~1.8, though your results may differ slightly due to non-determinism in model training. (For reference, a randomly generated submission yields a score of something like ~2.4.)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://drivendata-public-assets.s3.amazonaws.com/conservision-benchmark-score.jpg" class="img-fluid figure-img"></p>
+<figcaption>benchmark submission</figcaption>
+</figure>
+</div>
+<p>Now it is up to you to improve on this benchmark!</p>
+<p>Head over to the <a href="https://www.drivendata.org/competitions/87/competition-image-classification-wildlife-conservation/">competition</a> for data and more background info, or the <a href="https://community.drivendata.org/c/conser-vision/87">competition forum</a> if you have any questions. Good luck!</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
