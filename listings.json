@@ -3,8 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/posts/pandas-tests/code.html",
-      "/posts/fastai-img-classif/fastai-img-classif.html",
-      "/posts/fastai-img-classif/data/animals/benchmark.html"
+      "/posts/fastai-img-classif/fastai-img-classif.html"
     ]
   }
 ]
