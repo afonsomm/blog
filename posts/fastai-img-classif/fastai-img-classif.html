@@ -1090,15 +1090,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <section id="load-data-1" class="level2">
 <h2 class="anchored" data-anchor-id="load-data-1">Load Data</h2>
-<div id="cell-34" class="cell" data-execution_count="70">
+<div id="cell-34" class="cell" data-execution_count="131">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-35" class="cell" data-execution_count="71">
+<div id="cell-35" class="cell" data-execution_count="132">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> pd.read_csv(<span class="st">"./data/animals/train-labels.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-36" class="cell" data-execution_count="72">
+<div id="cell-36" class="cell" data-execution_count="133">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>labels.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="72">
+<div class="cell-output cell-output-display" data-execution_count="133">
 <div>
 <div>
 
@@ -1150,11 +1150,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="cell-37" class="cell" data-execution_count="73">
+<div id="cell-37" class="cell" data-execution_count="134">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>labels[<span class="st">"label"</span>] <span class="op">=</span> labels.iloc[:, <span class="dv">1</span>:].idxmax(axis<span class="op">=</span><span class="dv">1</span>).values</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> labels[[<span class="st">"id"</span>, <span class="st">"label"</span>]].set_index(<span class="st">"id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-38" class="cell" data-execution_count="74">
+<div id="cell-38" class="cell" data-execution_count="135">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>display(labels.head(<span class="dv">2</span>))</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(labels.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1192,38 +1192,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>(16488, 1)</code></pre>
 </div>
 </div>
-<div id="cell-39" class="cell" data-execution_count="75">
+<div id="cell-39" class="cell" data-execution_count="136">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>labels_sample <span class="op">=</span> labels.groupby(<span class="st">"label"</span>).sample(frac<span class="op">=</span><span class="fl">0.05</span>)[<span class="st">"label"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-40" class="cell" data-execution_count="76">
+<div id="cell-40" class="cell" data-execution_count="137">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>labels_sample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="76">
+<div class="cell-output cell-output-display" data-execution_count="137">
 <pre><code>id
-ZJ010349    antelope_duiker
-ZJ016091    antelope_duiker
-ZJ009916    antelope_duiker
-ZJ009220    antelope_duiker
-ZJ007576    antelope_duiker
+ZJ009857    antelope_duiker
+ZJ006205    antelope_duiker
+ZJ015289    antelope_duiker
+ZJ002203    antelope_duiker
+ZJ008486    antelope_duiker
                  ...       
-ZJ006439             rodent
-ZJ003230             rodent
-ZJ013217             rodent
-ZJ002723             rodent
-ZJ002394             rodent
+ZJ012387             rodent
+ZJ008316             rodent
+ZJ012197             rodent
+ZJ004787             rodent
+ZJ007973             rodent
 Name: label, Length: 826, dtype: object</code></pre>
 </div>
 </div>
 </section>
 <section id="train-model-1" class="level2">
 <h2 class="anchored" data-anchor-id="train-model-1">Train Model</h2>
-<div id="cell-42" class="cell" data-execution_count="96">
+<div id="cell-42" class="cell" data-execution_count="138">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-43" class="cell" data-execution_count="97">
+<div id="cell-43" class="cell" data-execution_count="139">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>train_path <span class="op">=</span> <span class="st">"./data/animals/train/"</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>test_path <span class="op">=</span> <span class="st">"./data/animals/test/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-44" class="cell" data-execution_count="98">
+<div id="cell-44" class="cell" data-execution_count="140">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_items(path):</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> Path(path)</span>
@@ -1235,7 +1235,7 @@ Name: label, Length: 826, dtype: object</code></pre>
 <span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> L(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-45" class="cell" data-execution_count="80">
+<div id="cell-45" class="cell" data-execution_count="141">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataBlock(blocks<span class="op">=</span>(ImageBlock, CategoryBlock), </span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                get_items<span class="op">=</span>get_items,</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                get_y<span class="op">=</span><span class="kw">lambda</span> x: labels_sample.loc[x.name[:<span class="op">-</span><span class="dv">4</span>]], </span>
@@ -1244,7 +1244,7 @@ Name: label, Length: 826, dtype: object</code></pre>
 <span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                batch_tfms<span class="op">=</span>[Normalize.from_stats(<span class="op">*</span>imagenet_stats)]</span>
 <span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>               ).dataloaders(train_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-46" class="cell" data-execution_count="81">
+<div id="cell-46" class="cell" data-execution_count="142">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1254,13 +1254,13 @@ Name: label, Length: 826, dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-47" class="cell" data-execution_count="82">
+<div id="cell-47" class="cell" data-execution_count="143">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dls.n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="82">
+<div class="cell-output cell-output-display" data-execution_count="143">
 <pre><code>661</code></pre>
 </div>
 </div>
-<div id="cell-48" class="cell" data-execution_count="83">
+<div id="cell-48" class="cell" data-execution_count="144">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, resnet18, metrics<span class="op">=</span>error_rate)</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1296,9 +1296,9 @@ Name: label, Length: 826, dtype: object</code></pre>
 <tbody>
 <tr class="odd">
 <td>0</td>
-<td>2.981672</td>
-<td>1.726659</td>
-<td>0.581818</td>
+<td>3.050437</td>
+<td>2.190669</td>
+<td>0.696970</td>
 <td>00:10</td>
 </tr>
 </tbody>
@@ -1338,72 +1338,72 @@ Name: label, Length: 826, dtype: object</code></pre>
 <tbody>
 <tr class="odd">
 <td>0</td>
-<td>2.026164</td>
-<td>1.483618</td>
-<td>0.539394</td>
-<td>00:11</td>
+<td>1.883267</td>
+<td>1.707361</td>
+<td>0.551515</td>
+<td>00:12</td>
 </tr>
 <tr class="even">
 <td>1</td>
-<td>1.731047</td>
-<td>1.412682</td>
-<td>0.496970</td>
-<td>00:11</td>
+<td>1.671480</td>
+<td>1.513506</td>
+<td>0.436364</td>
+<td>00:12</td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td>1.418197</td>
-<td>1.315527</td>
-<td>0.472727</td>
-<td>00:11</td>
+<td>1.359095</td>
+<td>1.500973</td>
+<td>0.460606</td>
+<td>00:12</td>
 </tr>
 <tr class="even">
 <td>3</td>
-<td>1.145188</td>
-<td>1.348643</td>
+<td>1.100571</td>
+<td>1.569371</td>
 <td>0.448485</td>
 <td>00:11</td>
 </tr>
 <tr class="odd">
 <td>4</td>
-<td>0.908982</td>
-<td>1.325396</td>
-<td>0.436364</td>
+<td>0.877178</td>
+<td>1.688496</td>
+<td>0.460606</td>
 <td>00:11</td>
 </tr>
 <tr class="even">
 <td>5</td>
-<td>0.720561</td>
-<td>1.400179</td>
-<td>0.430303</td>
+<td>0.698931</td>
+<td>1.693306</td>
+<td>0.478788</td>
 <td>00:11</td>
 </tr>
 <tr class="odd">
 <td>6</td>
-<td>0.579397</td>
-<td>1.426558</td>
-<td>0.424242</td>
+<td>0.563536</td>
+<td>1.697963</td>
+<td>0.430303</td>
 <td>00:11</td>
 </tr>
 <tr class="even">
 <td>7</td>
-<td>0.474904</td>
-<td>1.426744</td>
-<td>0.393939</td>
+<td>0.463716</td>
+<td>1.748586</td>
+<td>0.448485</td>
 <td>00:11</td>
 </tr>
 <tr class="odd">
 <td>8</td>
-<td>0.390903</td>
-<td>1.437192</td>
-<td>0.418182</td>
+<td>0.376198</td>
+<td>1.744868</td>
+<td>0.448485</td>
 <td>00:11</td>
 </tr>
 <tr class="even">
 <td>9</td>
-<td>0.330643</td>
-<td>1.440059</td>
-<td>0.406061</td>
+<td>0.311529</td>
+<td>1.747836</td>
+<td>0.454545</td>
 <td>00:11</td>
 </tr>
 </tbody>
@@ -1411,7 +1411,7 @@ Name: label, Length: 826, dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-49" class="cell" data-execution_count="84">
+<div id="cell-49" class="cell" data-execution_count="145">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>interp <span class="op">=</span> ClassificationInterpretation.from_learner(learn)</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>interp.plot_confusion_matrix()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1464,7 +1464,7 @@ Name: label, Length: 826, dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-50" class="cell" data-execution_count="88">
+<div id="cell-50" class="cell" data-execution_count="146">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>interp.plot_top_losses(k<span class="op">=</span><span class="dv">5</span>, nrows<span class="op">=</span><span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">22</span>,<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
@@ -1495,7 +1495,7 @@ Name: label, Length: 826, dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-51" class="cell" data-execution_count="86">
+<div id="cell-51" class="cell" data-execution_count="147">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.widgets <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>cleaner <span class="op">=</span> ImageClassifierCleaner(learn)</span>
@@ -1544,7 +1544,7 @@ Name: label, Length: 826, dtype: object</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"598b0e2e05594fe29f7f878d831faa6a","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"f54eab3ff63a4b6887b39eceeeab71ba","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>
@@ -1552,9 +1552,9 @@ Name: label, Length: 826, dtype: object</code></pre>
 </section>
 <section id="test-model-1" class="level2">
 <h2 class="anchored" data-anchor-id="test-model-1">Test Model</h2>
-<div id="cell-54" class="cell" data-execution_count="91">
+<div id="cell-54" class="cell" data-execution_count="159">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>pd.read_csv(<span class="st">"./data/animals/sample-submission.csv"</span>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="91">
+<div class="cell-output cell-output-display" data-execution_count="159">
 <div>
 <div>
 
@@ -1642,7 +1642,7 @@ Name: label, Length: 826, dtype: object</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-55" class="cell" data-execution_count="99">
+<div id="cell-55" class="cell" data-execution_count="149">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>test_dl <span class="op">=</span> dls.test_dl(get_image_files(test_path))</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>preds_probs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>test_dl)[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1667,22 +1667,23 @@ Name: label, Length: 826, dtype: object</code></pre>
 
 </div>
 </div>
-<div id="cell-56" class="cell" data-execution_count="116">
+<div id="cell-56" class="cell" data-execution_count="150">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>ids <span class="op">=</span> np.array([item.name[:<span class="op">-</span><span class="dv">4</span>] <span class="cf">for</span> item <span class="kw">in</span> test_dl.dataset.items])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-57" class="cell" data-execution_count="118">
+<div id="cell-57" class="cell" data-execution_count="151">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>learn.dls.vocab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="118">
+<div class="cell-output cell-output-display" data-execution_count="151">
 <pre><code>['antelope_duiker', 'bird', 'blank', 'civet_genet', 'hog', 'leopard', 'monkey_prosimian', 'rodent']</code></pre>
 </div>
 </div>
-<div id="cell-58" class="cell" data-execution_count="123">
+<div id="cell-58" class="cell" data-execution_count="163">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>submission_df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>preds_probs, columns<span class="op">=</span> learn.dls.vocab)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>submission_df.insert(<span class="dv">0</span>, <span class="st">"id"</span>, ids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>submission_df.insert(<span class="dv">0</span>, <span class="st">"id"</span>, ids)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>submission_df.sort_values(by<span class="op">=</span><span class="st">"id"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-59" class="cell" data-execution_count="130">
+<div id="cell-59" class="cell" data-execution_count="164">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>submission_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="130">
+<div class="cell-output cell-output-display" data-execution_count="164">
 <div>
 <div>
 
@@ -1704,64 +1705,64 @@ Name: label, Length: 826, dtype: object</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>ZJ018402</td>
-<td>0.015556</td>
-<td>0.156195</td>
-<td>0.009487</td>
-<td>0.000612</td>
-<td>0.006590</td>
-<td>0.064117</td>
-<td>0.743825</td>
-<td>0.003619</td>
+<td data-quarto-table-cell-role="th">1901</td>
+<td>ZJ016488</td>
+<td>0.003612</td>
+<td>6.942989e-04</td>
+<td>0.323665</td>
+<td>5.332318e-01</td>
+<td>0.020963</td>
+<td>0.100759</td>
+<td>1.180175e-02</td>
+<td>0.005273</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>ZJ017731</td>
-<td>0.157978</td>
-<td>0.035174</td>
-<td>0.605841</td>
-<td>0.000882</td>
-<td>0.012846</td>
-<td>0.015059</td>
-<td>0.170520</td>
-<td>0.001701</td>
+<td data-quarto-table-cell-role="th">1693</td>
+<td>ZJ016489</td>
+<td>0.026071</td>
+<td>8.592082e-02</td>
+<td>0.024220</td>
+<td>4.086171e-03</td>
+<td>0.834774</td>
+<td>0.011074</td>
+<td>1.285491e-02</td>
+<td>0.000999</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>ZJ020823</td>
-<td>0.160550</td>
-<td>0.003754</td>
-<td>0.053754</td>
-<td>0.040143</td>
-<td>0.722096</td>
-<td>0.001078</td>
-<td>0.010336</td>
-<td>0.008287</td>
+<td data-quarto-table-cell-role="th">2752</td>
+<td>ZJ016490</td>
+<td>0.030828</td>
+<td>5.230120e-02</td>
+<td>0.045449</td>
+<td>1.384969e-01</td>
+<td>0.718519</td>
+<td>0.003206</td>
+<td>7.886172e-03</td>
+<td>0.003315</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>ZJ018364</td>
-<td>0.817872</td>
-<td>0.016857</td>
-<td>0.109952</td>
-<td>0.001333</td>
-<td>0.007137</td>
-<td>0.009395</td>
-<td>0.015491</td>
-<td>0.021963</td>
+<td data-quarto-table-cell-role="th">2542</td>
+<td>ZJ016491</td>
+<td>0.000002</td>
+<td>8.615297e-08</td>
+<td>0.000002</td>
+<td>3.867934e-07</td>
+<td>0.000002</td>
+<td>0.999990</td>
+<td>9.170705e-07</td>
+<td>0.000002</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>ZJ017057</td>
-<td>0.259660</td>
-<td>0.005285</td>
-<td>0.002374</td>
-<td>0.008931</td>
-<td>0.319650</td>
-<td>0.051824</td>
-<td>0.263565</td>
-<td>0.088711</td>
+<td data-quarto-table-cell-role="th">2254</td>
+<td>ZJ016492</td>
+<td>0.500051</td>
+<td>1.019086e-02</td>
+<td>0.049266</td>
+<td>3.648468e-02</td>
+<td>0.045658</td>
+<td>0.003554</td>
+<td>3.501456e-01</td>
+<td>0.004649</td>
 </tr>
 </tbody>
 </table>
@@ -1769,6 +1770,9 @@ Name: label, Length: 826, dtype: object</code></pre>
 </div>
 </div>
 </div>
+</div>
+<div id="cell-60" class="cell" data-execution_count="165">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>submission_df.to_csv(<span class="st">"./data/animals/submission.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
