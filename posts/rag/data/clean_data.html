@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Afonso Matoso Magalhães - Blog</title>
+<title>Afonso Matoso Magalhães</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +23,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +66,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../../index.html">
     <span class="navbar-title">Afonso Matoso Magalhães</span>
     </a>
   </div>
@@ -149,7 +89,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -170,75 +110,74 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="courses">courses <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Blog</h1>
-</div>
-
-
-
-<div class="quarto-title-meta column-page-left">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
+<section id="deployment---clean-data-recomendação-de-treino" class="level1">
+<h1>Deployment - Clean Data &gt; Recomendação de treino</h1>
+<p>This script consists of 3 main steps:</p>
+<ol type="1">
+<li>Load from the database, i.e., students’ test results, tests’ reference values, and previously cleaned data (resulting from this same script).</li>
+<li>Clean, i.e., filtering out loaded records with invalid information, transforming existing features, and creating new ones. The steps that contain “audit” in the diagram also create a DataFrame to log the changes made to the original data.</li>
+<li>Aggregate to keep each test’s “Best” or “Latest” value, which is chosen on the next step depending on the use case (on this one, it’s the “Latest”).</li>
+</ol>
+<section id="load" class="level2">
+<h2 class="anchored" data-anchor-id="load">Load</h2>
+<ul>
+<li>The Raw Data is loaded from the FITescola database, containing all the students’ results for the given school year, as originally inserted.</li>
+<li>The Reference Values are loaded from a table in the FITescola database and contain the bounds defining each test’s health zones for a given gender and age.</li>
+<li>The Cleaned Results are loaded from a table in the FOCUS database and contain past cleaned data for the given school year.</li>
+<li>This DataFrame has the following structure (the same as the returned DataFrame containing the cleaned data from this script):</li>
+</ul>
+<p>The column and test names for the three loaded datasets are renamed at the beginning of the script and mapped back to their original names at the end. The columns and tests’ name mapping are defined in load.py, as are the schemas for the three loaded DataFrames.</p>
+</section>
+<section id="clean" class="level2">
+<h2 class="anchored" data-anchor-id="clean">Clean</h2>
+<p>In this part, the students’ data is filtered out if they have invalid data, their test values are corrected, and new features are obtained from the corrected tests.</p>
+<ol type="1">
+<li>The Mile and Shuttle values are substituted for their “raw value”, corresponding to the time and number of laps, respectively.</li>
+<li>Students’ data is filtered out if it has an invalid school year. Subsequently, if their age is outside the defined bounds for their school year, their data is also removed.</li>
+<li>The Spark DataFrame is pivoted, going from 1 row per (“student id”, “test date”, “test name”), to 1 row per (“student id”, “test date”), meaning each test has its column.</li>
+<li>Students’ Fat Mass is calculated using predefined formulas by gender, using their Calf Skinfold and Tricep Skinfold measurements. The calculated values are then used to fill in missing values from the original Fat Mass column.</li>
+<li>A sequence of cleaning operations is applied to the different tests (defined in <strong>init</strong>.py -&gt; clean_tests() -&gt; clean_func_params_seq). The various operations are defined as follows:
+<ol type="a">
+<li>Clean by bounds - a single test’s values are either removed or transformed between or outside a certain range. The values may be cleaned for a given age range and gender.</li>
+<li>Clean line metric X equals metric Y—two tests’ values are optionally removed if they are equal and either above or below a certain value. The data can also be optionally clean for a given age range and gender.</li>
+<li>Switch tests - two tests’ values are either removed or switched for each student if they are possibly switched in the database and depending on the number of samples they have.</li>
+<li>Clean area line metric X equals metric Y - two tests’ values are optionally removed above or below specific values if their values are either above or below a line between 2 points defined by both tests’ values and optionally for a given age range and gender.</li>
+<li>Remove consecutive equal measurements - a single test’s values are removed, if a student has more than a given number of consecutive equal measurements.</li>
+</ol></li>
+<li>Calculate BMI based on the corrected weight and height tests’ values.</li>
+</ol>
+<p>Besides the steps above, after the results aggregation, explained below, the VO2 Max is calculated from the final mile and shuttle values by obtaining the VO2 for the Mile and Shuttle tests, joining the reference values for this parameter, and keeping the VO2 from both tests with the best value, meaning the one with the highest distance to the worst healthy bound (in this case the minimum bound).</p>
+<p>The Audit DF is created on step 2 of the cleaning process. At each operation of the sequence of cleaning operations (step 5), the corresponding Audit DF is concatenated to the previous one. It contains the following columns:</p>
+</section>
+<section id="aggregate" class="level2">
+<h2 class="anchored" data-anchor-id="aggregate">Aggregate</h2>
+<p>In this part, the corrected results from the&nbsp;Raw Data&nbsp;are aggregated along with the loaded&nbsp;Cleaned Results.</p>
+<p>Before each step of this phase, the processed DataFrame is melted, so we go back to having one line per (“student id”, “test date”, “test name”), and joined to the&nbsp;Reference Values.</p>
+<ol type="1">
+<li>The&nbsp;distances to the worst healthy bound&nbsp;and&nbsp;the healthy zone&nbsp;are obtained. These are used to aggregate the students’ results and, in the following pipeline steps, get the score (health zone) for each test, respectively.</li>
+<li>The&nbsp;distance to the worst healthy bound&nbsp;is obtained by calculating the difference between each test’s values and the closest worst healthy bound so that a higher distance means better results. For instance, there are three zones for the Abs test, i.e., PM -&gt; ZS -&gt; PA, so this distance is the test value subtracted from the minimum value of the healthy zone (ZS). However, for the BMI, there are two zones, i.e., PM -&gt; ZS -&gt; PM, so this distance is calculated to the closest healthy bound in a way that it is negative outside the healthy zone and positive inside.</li>
+<li>The&nbsp;distance to the healthy zone&nbsp;is calculated by obtaining the healthy zone ranges for each test (max bound - min bound) and transforming the&nbsp;distance to the worst healthy bound, making it positive if it is higher than the range, 0 if inside the healthy zone, and keeping the negative values.</li>
+<li>The&nbsp;Cleaned Results&nbsp;are concatenated to the corrected&nbsp;Raw Data&nbsp;results. The VO2 Max is filtered out of the first one since it is calculated after the aggregation.</li>
+<li>The results are aggregated to obtain each student’s “Best” results and, if it is the current year, also the “Latest.”&nbsp;</li>
+<li>The first (“Best”) corresponds to the results with the highest&nbsp;distance to the worst healthy bound&nbsp;unless it is a Body Composition test, in which case the latest value is kept.</li>
+<li>The second (“Latest”) corresponds to each student’s current state, keeping the last test results.</li>
+</ol>
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="courses" data-listing-file-modified-sort="1714584277828" data-listing-reading-time-sort="9" data-listing-word-count-sort="1621">
-<div class="thumbnail">
-<p><a href="./posts/git/git.html" class="no-external"></a></p><a href="./posts/git/git.html" class="no-external">
-<p><img src="./posts/git/logo.png" class="thumbnail-image"></p>
-</a><p><a href="./posts/git/git.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/git/git.html" class="no-external">Git</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/git/git.html" class="no-external">Pratical Git Tutorial.</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('courses'); return false;">
-courses
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/git/git.html" class="no-external">This post follows the Learning Git Branching game, in which we use git commands to reach the desired state for the git repository at each level.</a>
-</div>
-</div>
-<div class="metadata">
-<p><a href="./posts/git/git.html" class="no-external"></a></p><a href="./posts/git/git.html" class="no-external">
-<div class="listing-author">
-Afonso Matoso Magalhães
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</section>
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -320,7 +259,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/afonsomm\.github\.io\/blog\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

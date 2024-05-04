@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Afonso Matoso Magalhães">
+
+<title>Afonso Matoso Magalhães - Fastai - Images</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Afonso Matoso Magalhães</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:afonsomm98@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Fastai - Images</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">courses</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Afonso Matoso Magalhães </p>
+            </div>
+    </div>
+      
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">April 2, 2024</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#fitting-a-function-with-gradient-descent" id="toc-fitting-a-function-with-gradient-descent" class="nav-link active" data-scroll-target="#fitting-a-function-with-gradient-descent">Fitting a function with <em>gradient descent</em></a></li>
+  <li><a href="#automating-gradient-descent" id="toc-automating-gradient-descent" class="nav-link" data-scroll-target="#automating-gradient-descent">Automating gradient descent</a></li>
+  <li><a href="#how-a-neural-network-approximates-any-given-function" id="toc-how-a-neural-network-approximates-any-given-function" class="nav-link" data-scroll-target="#how-a-neural-network-approximates-any-given-function">How a neural network approximates any given function</a></li>
+  <li><a href="#how-to-recognise-an-owl" id="toc-how-to-recognise-an-owl" class="nav-link" data-scroll-target="#how-to-recognise-an-owl">How to recognise an owl</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div id="2pLekVCObBvR" class="cell" data-executioninfo="{&quot;elapsed&quot;:24049,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710785910706,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="0f7f2583-0390-47ac-aa39-8d9df697d0c2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">'/content/drive'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mounted at /content/drive</code></pre>
+</div>
+</div>
+<div id="CxKgXuwBbBm9" class="cell" data-executioninfo="{&quot;elapsed&quot;:430,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710785915102,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="5e95bb9f-4712-4eec-9921-5e79dbe8ca7b">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>cd <span class="op">/</span>content<span class="op">/</span>drive<span class="op">/</span>MyDrive<span class="op">/</span>fastai course<span class="op">/</span>Aula <span class="fl">3.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>/content/drive/MyDrive/fastai course/Aula 3.2</code></pre>
+</div>
+</div>
+<p><strong>Important</strong>: The interactive features of this notebook don’t work in Kaggle’s <em>Reader</em> mode. They only work in <em>Edit</em> mode. Therefore, before starting reading this, please click “<strong>Copy &amp; Edit</strong>” in the top right of this window, then in the menu click <em>Run</em> and then <em>Run all</em>. Then you’ll be able to use all the interactive sliders in this notebook.</p>
+<section id="fitting-a-function-with-gradient-descent" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-a-function-with-gradient-descent">Fitting a function with <em>gradient descent</em></h2>
+<p>A neural network is just a mathematical function. In the most standard kind of neural network, the function:</p>
+<ol type="1">
+<li>Multiplies each input by a number of values. These values are known as <em>parameters</em></li>
+<li>Adds them up for each group of values</li>
+<li>Replaces the negative numbers with zeros</li>
+</ol>
+<p>This represents one “layer”. Then these three steps are repeated, using the outputs of the previous layer as the inputs to the next layer. Initially, the parameters in this function are selected randomly. Therefore a newly created neural network doesn’t do anything useful at all – it’s just random!</p>
+<p>To get the function to “learn” to do something useful, we have to change the parameters to make them “better” in some way. We do this using <em>gradient descent</em>. Let’s see how this works…</p>
+<p>::: {#398d7c7a .cell _kg_hide-input=‘true’ execution=‘{“iopub.execute_input”:“2024-03-18T16:35:27.824246Z”,“iopub.status.busy”:“2024-03-18T16:35:27.823710Z”,“iopub.status.idle”:“2024-03-18T16:35:30.688757Z”,“shell.execute_reply”:“2024-03-18T16:35:30.687413Z”}’ papermill=‘{“duration”:2.940518,“end_time”:“2024-03-18T16:35:30.692282”,“exception”:false,“start_time”:“2024-03-18T16:35:27.751764”,“status”:“completed”}’ tags=‘[]’}</p>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.basics <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.rc(<span class="st">'figure'</span>, dpi<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_function(f, title<span class="op">=</span><span class="va">None</span>, <span class="bu">min</span><span class="op">=-</span><span class="fl">2.1</span>, <span class="bu">max</span><span class="op">=</span><span class="fl">2.1</span>, color<span class="op">=</span><span class="st">'r'</span>, ylim<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> torch.linspace(<span class="bu">min</span>,<span class="bu">max</span>, <span class="dv">100</span>)[:,<span class="va">None</span>]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ylim: plt.ylim(ylim)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    plt.plot(x, f(x), color)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> title <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>: plt.title(title)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>:::</p>
+<p>To learn how gradient descent works, we’re going to start by fitting a quadratic, since that’s a function most of us are probably more familiar with than a neural network. Here’s the quadratic we’re going to try to fit:</p>
+<div id="149f6c58" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:30.977644Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:30.977054Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:31.821938Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:31.820894Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:1030,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710785969327,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="020ace10-8eb7-4794-9676-89394c4ed201" data-papermill="{&quot;duration&quot;:0.921043,&quot;end_time&quot;:&quot;2024-03-18T16:35:31.824511&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:30.903468&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x): <span class="cf">return</span> <span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>x <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plot_function(f, <span class="st">"$3x^2 + 2x + 1$"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This quadratic is of the form <span class="math inline">\(ax^2+bx+c\)</span>, with parameters <span class="math inline">\(a=3\)</span>, <span class="math inline">\(b=2\)</span>, <span class="math inline">\(c=1\)</span>. To make it easier to try out different quadratics for fitting a model to the data we’ll create, let’s create a function that calculates the value of a point on any quadratic:</p>
+<div id="541cc519" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:32.114902Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:32.114524Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:32.120528Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:32.119189Z&quot;}" data-papermill="{&quot;duration&quot;:0.081413,&quot;end_time&quot;:&quot;2024-03-18T16:35:32.122898&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:32.041485&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quad(a, b, c, x): <span class="cf">return</span> a<span class="op">*</span>x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> b<span class="op">*</span>x <span class="op">+</span> c</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we fix some particular values of a, b, and c, then we’ll have made a quadratic. To fix values passed to a function in python, we use the <code>partial</code> function, like so:</p>
+<div id="d7290e08" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:32.408774Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:32.408066Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:32.413461Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:32.412221Z&quot;}" data-papermill="{&quot;duration&quot;:0.080846,&quot;end_time&quot;:&quot;2024-03-18T16:35:32.415931&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:32.335085&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mk_quad(a,b,c): <span class="cf">return</span> partial(quad, a,b,c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>So for instance, we can recreate our previous quadratic:</p>
+<div id="4619b3bd" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:32.699637Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:32.699024Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:32.925801Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:32.924824Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:582,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710786363708,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="8d947b6f-662c-442d-e29c-eb6b5e309089" data-papermill="{&quot;duration&quot;:0.300722,&quot;end_time&quot;:&quot;2024-03-18T16:35:32.928580&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:32.627858&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> mk_quad(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plot_function(f2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="YpnYpFGu0G2W" class="cell" data-executioninfo="{&quot;elapsed&quot;:3,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710786382634,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="adc080cf-af7e-4648-afbd-198dc1f883fd">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>f2(<span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>10.75</code></pre>
+</div>
+</div>
+<p>Now let’s simulate making some noisy measurements of our quadratic <code>f</code>. We’ll then use gradient descent to see if we can recreate the original function from the data.</p>
+<p>Here’s a couple of functions to add some random noise to data:</p>
+<div id="2402b7d4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:33.218487Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:33.217873Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:33.223948Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:33.223146Z&quot;}" data-papermill="{&quot;duration&quot;:0.081666,&quot;end_time&quot;:&quot;2024-03-18T16:35:33.226271&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:33.144605&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> noise(x, scale): <span class="cf">return</span> np.random.normal(scale<span class="op">=</span>scale, size<span class="op">=</span>x.shape)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_noise(x, mult, add): <span class="cf">return</span> x <span class="op">*</span> (<span class="dv">1</span><span class="op">+</span>noise(x,mult)) <span class="op">+</span> noise(x,add)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s use the now to create our noisy measurements based on the quadratic above:</p>
+<div id="03e16a2d" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:33.512328Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:33.511737Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:33.529365Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:33.528645Z&quot;}" data-papermill="{&quot;duration&quot;:0.094035,&quot;end_time&quot;:&quot;2024-03-18T16:35:33.531876&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:33.437841&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.linspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">2</span>, steps<span class="op">=</span><span class="dv">20</span>)[:,<span class="va">None</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> add_noise(f(x), <span class="fl">0.15</span>, <span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s the first few values of each of <code>x</code> and <code>y</code>:</p>
+<div id="0cef763b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:33.815832Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:33.815338Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:33.860656Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:33.859753Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:404,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710786474455,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="f23565f9-015d-488f-c312-f3c1971da5fc" data-papermill="{&quot;duration&quot;:0.120086,&quot;end_time&quot;:&quot;2024-03-18T16:35:33.863380&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:33.743294&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x[:<span class="dv">5</span>],y[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>(tensor([[-2.0000],
+         [-1.7895],
+         [-1.5789],
+         [-1.3684],
+         [-1.1579]]),
+ tensor([[11.8690],
+         [ 6.5433],
+         [ 5.9396],
+         [ 2.6304],
+         [ 1.7947]], dtype=torch.float64))</code></pre>
+</div>
+</div>
+<p>As you can see, they’re <em>tensors</em>. A tensor is just like an <code>array</code> in numpy (if you’re not familiar with numpy, I strongly recommend reading <a href="https://wesmckinney.com/book/">this great book</a>, because it’s a critical foundation for nearly all numeric programming in Python. Furthermore, PyTorch, which most researchers use for deep learning, is modeled closely on numpy.) A tensor can be a single number (a <em>scalar</em> or <em>rank-0 tensor</em>), a list of numbers (a <em>vector</em> or <em>rank-1 tensor</em>), a table of numbers (a <em>matrix</em> or <em>rank-2 tensor</em>), a table of tables of numbers (a <em>rank-3 tensor</em>), and so forth.</p>
+<p>We’re not going to learn much about our data by just looking at the raw numbers, so let’s draw a picture:</p>
+<div id="468c230a" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:34.156222Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:34.155753Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:34.439806Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:34.438279Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:6,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710786477328,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="8610b32c-7b6d-48f8-bf58-0b6ab129360f" data-papermill="{&quot;duration&quot;:0.361655,&quot;end_time&quot;:&quot;2024-03-18T16:35:34.442664&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:34.081009&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(x,y)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>How do we find values of a, b, and c which fit this data? One approach is to try a few values and see what fits. Here’s a function which overlays a quadratic on top of our data, along with some sliders to change a, b, and c, and see how it looks:</p>
+<div id="b0b99889" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:34.747085Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:34.745621Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:35.023315Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:35.022112Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:506,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710786773615,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="521fd2db-19a3-41a9-b152-8e7871504da8" data-papermill="{&quot;duration&quot;:0.357482,&quot;end_time&quot;:&quot;2024-03-18T16:35:35.026879&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:34.669397&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="at">@interact</span>(a<span class="op">=</span><span class="dv">3</span>, b<span class="op">=</span><span class="dv">2</span>, c<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_quad(a, b, c):</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    plt.scatter(x,y)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    plot_function(mk_quad(a,b,c), ylim<span class="op">=</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">13</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"04c6544307484257bb086c1006048232","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-14-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Reminder</strong>: If the sliders above aren’t working for you, that’s because the interactive features of this notebook don’t work in Kaggle’s <em>Reader</em> mode. They only work in <em>Edit</em> mode. Please click “<strong>Copy &amp; Edit</strong>” in the top right of this window, then in the menu click <em>Run</em> and then <em>Run all</em>. Then you’ll be able to use all the interactive sliders in this notebook.</p>
+<p>Try moving slider <code>a</code> a bit to the left. Does that look better or worse? How about if you move it a bit to the right? Find out which direction seems to improve the fit of the quadratic to the data, and move the slider a bit in that direction. Next, do the same for slider <code>b</code>: first figure out which direction improves the fit, then move it a bit in that direction. Then do the same for <code>c</code>.</p>
+<p>OK, now go back to slider <code>a</code> and repeat the process. Do it again for <code>b</code> and <code>c</code> as well.</p>
+<p>Did you notice that by going back and doing the sliders a second time that you were able to improve things a bit further? That’s an important insight – it’s only after changing <code>b</code> and <code>c</code>, for instance, that you realise that <code>a</code> actually needs some adjustment based on those new values.</p>
+<p>One thing that’s making this tricky is that we don’t really have a great sense of whether our fit is really better or worse. It would be easier if we had a numeric measure of that. On easy metric we could use is <em>mean absolute error</em> – which is the distance from each data point to the curve:</p>
+<div id="13d37656" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:35.473290Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:35.472638Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:35.477346Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:35.476653Z&quot;}" data-papermill="{&quot;duration&quot;:0.082481,&quot;end_time&quot;:&quot;2024-03-18T16:35:35.479887&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:35.397406&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mae(preds, acts): <span class="cf">return</span> (torch.<span class="bu">abs</span>(preds<span class="op">-</span>acts)).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’ll update our interactive function to print this at the top for us.</p>
+<p>Use this to repeat the approach we took before to try to find the best fit, but this time just use the value of the metric to decide which direction to move each slider, and how far to move it.</p>
+<p>This time around, try doing it in the opposite order: <code>c</code>, then <code>b</code>, then <code>a</code>.</p>
+<p>You’ll probably find that you have to go through the set of sliders a couple of times to get the best fit.</p>
+<div id="8d3c2e91" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:35.784622Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:35.783942Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:36.073323Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:36.072203Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:534,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710786927081,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="530a56d7-85c6-4a7b-94d5-3e7645e723f3" data-papermill="{&quot;duration&quot;:0.370392,&quot;end_time&quot;:&quot;2024-03-18T16:35:36.076689&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:35.706297&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="at">@interact</span>(a<span class="op">=</span><span class="fl">2.6</span>, b<span class="op">=</span><span class="fl">1.4</span>, c<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_quad(a, b, c):</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> mk_quad(a,b,c)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    plt.scatter(x,y)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> mae(f(x), y)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    plot_function(f, ylim<span class="op">=</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">12</span>), title<span class="op">=</span><span class="ss">f"MAE: </span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"ae03e4d27e554cb0ac823ea38818c96c","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-16-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In a modern neural network we’ll often have tens of millions of parameters to fit, or more, and thousands or millions of data points to fit them to. We’re not going to be able to do that by moving sliders around! We’ll need to automate this process.</p>
+<p>Thankfully, that turns out to be pretty straightforward. We can use calculus to figure out, for each parameter, whether we should increase or decrease it.</p>
+<p>Uh oh, calculus! If you haven’t touched calculus since school, you might be getting ready to run away at this point. But don’t worry, we don’t actually need much calculus at all. Just derivatives, which measure the rate of change of a function. We don’t even need to calculate them ourselves, because the computer will do it for us! If you’ve forgotten what a derivitive is, then watch the first three of these fantastic <a href="https://www.youtube.com/playlist?list=PLybg94GvOJ9ELZEe9s2NXTKr41Yedbw7M">videos by Professor Dave</a>. It’s only 15 minutes in total, so give it a go! Then come back here and we’ll continue on our journey…</p>
+</section>
+<section id="automating-gradient-descent" class="level2">
+<h2 class="anchored" data-anchor-id="automating-gradient-descent">Automating gradient descent</h2>
+<p>The basic idea is this: if we know the <em>gradient</em> of our <code>mae()</code> function <em>with respect to</em> our parameters, <code>a</code>, <code>b</code>, and <code>c</code>, then that means we know how adjusting (for instance) <code>a</code> will change the value of <code>mae()</code>. If, say, <code>a</code> has a <em>negative</em> gradient, then we know that increasing <code>a</code> will decrease <code>mae()</code>. Then we know that’s what we need to do, since we trying to make <code>mae()</code> as low as possible.</p>
+<p>So, we find the gradient of <code>mae()</code> for each of our parameters, and then adjust our parameters a bit in the <em>opposite</em> direction to the sign of the gradient.</p>
+<p>To do this, first we need a function that takes all the parameters <code>a</code>, <code>b</code>, and <code>c</code> as a single vector input, and returns the value <code>mae()</code> based on those parameters:</p>
+<div id="ca5aff01" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:36.686695Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:36.685426Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:36.691440Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:36.690185Z&quot;}" data-papermill="{&quot;duration&quot;:0.087364,&quot;end_time&quot;:&quot;2024-03-18T16:35:36.694426&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:36.607062&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quad_mae(params):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> mk_quad(<span class="op">*</span>params)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mae(f(x), y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s try it:</p>
+<div id="3a696b39" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:37.001451Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:37.001053Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:37.009960Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:37.008980Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:568,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787071076,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="5ef39d08-41ac-43a7-a2a8-f2000d9331d4" data-papermill="{&quot;duration&quot;:0.089062,&quot;end_time&quot;:&quot;2024-03-18T16:35:37.012253&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:36.923191&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>quad_mae([<span class="fl">1.1</span>, <span class="fl">1.1</span>, <span class="fl">1.1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre><code>tensor(2.4219, dtype=torch.float64)</code></pre>
+</div>
+</div>
+<p>Yup, that’s the same as the starting <code>mae()</code> we had in our plot before.</p>
+<p>We’re first going to do exactly the same thing as we did manually – pick some arbritrary starting point for our parameters. We’ll put them all into a single tensor:</p>
+<div id="4bd52cb9" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:37.318368Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:37.317981Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:37.323422Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:37.322305Z&quot;}" data-papermill="{&quot;duration&quot;:0.086284,&quot;end_time&quot;:&quot;2024-03-18T16:35:37.326055&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:37.239771&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>abc <span class="op">=</span> torch.tensor([<span class="fl">1.1</span>,<span class="fl">1.1</span>,<span class="fl">1.1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To tell PyTorch that we want it to calculate gradients for these parameters, we need to call <code>requires_grad_()</code>:</p>
+<div id="81223689" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:37.641040Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:37.640307Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:37.647702Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:37.646919Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:3,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787079349,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="df5b2b0f-6a2a-4826-8530-6aab5ff26090" data-papermill="{&quot;duration&quot;:0.089157,&quot;end_time&quot;:&quot;2024-03-18T16:35:37.650040&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:37.560883&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>abc.requires_grad_()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre><code>tensor([1.1000, 1.1000, 1.1000], requires_grad=True)</code></pre>
+</div>
+</div>
+<p>We can now calculate <code>mae()</code>. Generally, when doing gradient descent, the thing we’re trying to minimise is called the <em>loss</em>:</p>
+<div id="5b2c5cc2" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:37.963493Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:37.962851Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:37.973180Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:37.972097Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:3,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787082551,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="10c9fe86-3d06-4db3-c695-7944216bd63e" data-papermill="{&quot;duration&quot;:0.094561,&quot;end_time&quot;:&quot;2024-03-18T16:35:37.976047&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:37.881486&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> quad_mae(abc)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+<pre><code>tensor(2.4219, dtype=torch.float64, grad_fn=&lt;MeanBackward0&gt;)</code></pre>
+</div>
+</div>
+<p>To get PyTorch to now calculate the gradients, we need to call <code>backward()</code></p>
+<div id="8018a3d4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:38.285494Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:38.284775Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:38.302686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:38.301914Z&quot;}" data-papermill="{&quot;duration&quot;:0.098981,&quot;end_time&quot;:&quot;2024-03-18T16:35:38.305312&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:38.206331&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>loss.backward()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The gradients will be stored for us in an attribute called <code>grad</code>:</p>
+<div id="75234762" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:38.612533Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:38.611577Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:38.620076Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:38.618980Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:2,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787086008,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="6039d35e-1be1-4d18-d763-4b9dce1d518e" data-papermill="{&quot;duration&quot;:0.088652,&quot;end_time&quot;:&quot;2024-03-18T16:35:38.622501&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:38.533849&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>abc.grad</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="46">
+<pre><code>tensor([-1.3529, -0.0316, -0.5000])</code></pre>
+</div>
+</div>
+<ul>
+<li>Each gradient means that if we increase the parameter by 1, then the loss will decrease by the value of the gradient for that parameter. This is an approximation, since the slope of the function is not constant. So we estimate, given the current slope of the loss function dependent on the parameters, how much should we increase/decrease each of the latter.</li>
+</ul>
+<p>According to these gradients, all our parameters are a little low. So let’s increase them a bit. If we subtract the gradient, multiplied by a small number, that should improve them a bit:</p>
+<div id="5af47f3f" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:38.938173Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:38.937852Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:38.946733Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:38.945317Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:382,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787413668,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="348dd0bb-896e-49e9-bca9-0767e3d65120" data-papermill="{&quot;duration&quot;:0.09043,&quot;end_time&quot;:&quot;2024-03-18T16:35:38.949366&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:38.858936&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    abc <span class="op">-=</span> abc.grad<span class="op">*</span><span class="fl">0.01</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> quad_mae(abc)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'loss=</span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>loss=2.40</code></pre>
+</div>
+</div>
+<p>Yes, our loss has gone down!</p>
+<p>The “small number” we multiply is called the <em>learning rate</em>, and is the most important <em>hyper-parameter</em> to set when training a neural network.</p>
+<p>BTW, you’ll see we had to wrap our calculation of the new parameters in <code>with torch.no_grad()</code>. That disables the calculation of gradients for any operations inside that context manager. We have to do that, because <code>abc -= abc.grad*0.01</code> isn’t actually part of our quadratic model, so we don’t want derivitives to include that calculation.</p>
+<p>We can use a loop to do a few more iterations of this:</p>
+<div id="ce9ea31a" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:39.273444Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:39.272198Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:39.286563Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:39.285027Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:3,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787577778,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="286ff3ff-54bb-487f-fd9a-f32fd7de2587" data-papermill="{&quot;duration&quot;:0.10043,&quot;end_time&quot;:&quot;2024-03-18T16:35:39.289467&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:39.189037&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> quad_mae(abc)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    loss.backward()</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad(): abc <span class="op">-=</span> abc.grad<span class="op">*</span><span class="fl">0.01</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'step=</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">; loss=</span><span class="sc">{</span>loss<span class="sc">:.2f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>step=0; loss=2.40
+step=1; loss=2.36
+step=2; loss=2.30
+step=3; loss=2.21
+step=4; loss=2.11
+step=5; loss=1.98
+step=6; loss=1.85
+step=7; loss=1.72
+step=8; loss=1.58
+step=9; loss=1.46</code></pre>
+</div>
+</div>
+<p>As you can see, our loss keeps going down!</p>
+<p>If you keep running this loop for long enough however, you’ll see that the loss eventually starts increasing for a while. That’s because once the parameters get close to the correct answer, our parameter updates will jump right over the correct answer! To avoid this, we need to decrease our learning rate as we train. This is done using a <em>learning rate schedule</em>, and can be automated in most deep learning frameworks, such as fastai and PyTorch.</p>
+</section>
+<section id="how-a-neural-network-approximates-any-given-function" class="level2">
+<h2 class="anchored" data-anchor-id="how-a-neural-network-approximates-any-given-function">How a neural network approximates any given function</h2>
+<p>But neural nets are much more convenient and powerful than this example showed, because we can learn much more than just a quadratic with them. How does <em>that</em> work?</p>
+<p>The trick is that a neural network is a very expressive function. In fact – it’s <a href="https://en.wikipedia.org/wiki/Universal_approximation_theorem">infinitely expressive</a>. A neural network can approximate any computable function, given enough parameters. A “computable function” can cover just about anything you can imagine: understand and translate human speech; paint a picture; diagnose a disease from medical imaging; write an essay; etc…</p>
+<p>The way a neural network approximates a function actually turns out to be very simple. The key trick is to combine two extremely basic steps:</p>
+<ol type="1">
+<li>Matrix multiplication, which is just multiplying things together and then adding them up</li>
+<li>The function <span class="math inline">\(max(x,0)\)</span>, which simply replaces all negative numbers with zero.</li>
+</ol>
+<p>In PyTorch, the function <span class="math inline">\(max(x,0)\)</span> is written as <code>np.clip(x,0)</code>. The combination of a linear function and this <em>max()</em> is called a <em>rectified linear function</em>, and it can be implemented like this:</p>
+<div id="8c43945e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:39.922150Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:39.921841Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:39.926814Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:39.926156Z&quot;}" data-papermill="{&quot;duration&quot;:0.088188,&quot;end_time&quot;:&quot;2024-03-18T16:35:39.929082&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:39.840894&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rectified_linear(m,b,x):</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> m<span class="op">*</span>x<span class="op">+</span>b</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> torch.clip(y, <span class="fl">0.</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s what it looks like:</p>
+<div id="3153827e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:40.246846Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:40.246372Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:40.477594Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:40.476368Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:953,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787820309,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="b6966f51-f4e3-4a93-916a-4c20f4a0a49d" data-papermill="{&quot;duration&quot;:0.314012,&quot;end_time&quot;:&quot;2024-03-18T16:35:40.480423&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:40.166411&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>plot_function(partial(rectified_linear, <span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-27-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>BTW, instead of <code>torch.clip(y, 0.)</code>, we can instead use <code>F.relu(x)</code>, which does exactly the same thing. In PyTorch, <code>F</code> refers to the <code>torch.nn.functional</code> module.</p>
+<div id="ad673741" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:40.805543Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:40.804939Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:40.970898Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:40.969781Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:501,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787828752,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="3de94ba9-c91d-462d-84d3-504c2441fd4a" data-papermill="{&quot;duration&quot;:0.250146,&quot;end_time&quot;:&quot;2024-03-18T16:35:40.974163&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:40.724017&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rectified_linear2(m,b,x): <span class="cf">return</span> F.relu(m<span class="op">*</span>x<span class="op">+</span>b)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>plot_function(partial(rectified_linear2, <span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-28-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To understand how this function works, try using this interactive version to play around with the parameters <code>m</code> and <code>b</code>:</p>
+<div id="ab6295ff" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:41.302874Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:41.301525Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:41.527646Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:41.526587Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:839,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787886178,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="bd73a7fe-8b3f-4c72-ebf2-edea2f9a632c" data-papermill="{&quot;duration&quot;:0.313293,&quot;end_time&quot;:&quot;2024-03-18T16:35:41.532665&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:41.219372&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="at">@interact</span>(m<span class="op">=</span><span class="fl">1.5</span>, b<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_relu(m, b):</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    plot_function(partial(rectified_linear, m,b), ylim<span class="op">=</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"f1c746db594c4b48aa5b18e7df8ef127","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-29-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you see, <code>m</code> changes the slope, and <code>b</code> changes where the “hook” appears. This function doesn’t do much on its own, but look what happens when we add two of them together:</p>
+<div id="23f4b3fe" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-03-18T16:35:41.897791Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-03-18T16:35:41.896537Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-03-18T16:35:42.159181Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-03-18T16:35:42.158102Z&quot;}" data-executioninfo="{&quot;elapsed&quot;:411,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710787915738,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;},&quot;user_tz&quot;:0}" data-outputid="bfa118a3-864a-449c-b50f-dd5ae4a8f9f9" data-papermill="{&quot;duration&quot;:0.352119,&quot;end_time&quot;:&quot;2024-03-18T16:35:42.161955&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2024-03-18T16:35:41.809836&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double_relu(m1,b1,m2,b2,x):</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rectified_linear(m1,b1,x) <span class="op">+</span> rectified_linear(m2,b2,x)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="at">@interact</span>(m1<span class="op">=-</span><span class="fl">1.5</span>, b1<span class="op">=-</span><span class="fl">1.5</span>, m2<span class="op">=</span><span class="fl">1.5</span>, b2<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_double_relu(m1, b1, m2, b2):</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    plot_function(partial(double_relu, m1,b1,m2,b2), ylim<span class="op">=</span>(<span class="op">-</span><span class="dv">1</span>,<span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"ce075e8dd3664efba76a4f68761c1090","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn-foundations_files/figure-html/cell-30-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If you play around with that for a while, you notice something quite profound: with enough of these rectified linear functions added together, you could approximate any function with a single input, to whatever accuracy you like! Any time the function doesn’t quite match, you can just add a few more additions to the mix to make it a bit closer. As an experiment, perhaps you’d like to try creating your own <code>plot_triple_relu</code> interactive function, and maybe even include the scatter plot of our data from before, to see how close you can get?</p>
+<p>This exact same approach can be expanded to functions of 2, 3, or more parameters.</p>
+</section>
+<section id="how-to-recognise-an-owl" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-recognise-an-owl">How to recognise an owl</h2>
+<p>OK great, we’ve created a nifty little example showing that we can drawing squiggly lines that go through some points. So what?</p>
+<p>Well… the truth is that actually drawing squiggly lines (or planes, or high-dimensional hyperplanes…) through some points is literally <em>all that deep learning does</em>! If your data points are, say, the RGB values of pixels in photos of owls, then you can create an owl-recogniser model by following the exact steps above.</p>
+<p>This may, at first, sound about as useful as the classic “how to draw an owl” guide:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="attachment:c66592d3-c997-4c72-aed4-2dea579b96e1.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>Students often ask me at this point “OK Jeremy, but how do neural nets <em>actually work</em>”. But at a foundational level, there is no “step 2”. We’re done – the above steps will, given enough time and enough data, create (for example) an owl recogniser, if you feed in enough owls (and non-owls).</p>
+<p>The devil, I guess, is in the “given enough time and enough data” part of the above sentence. There’s a <em>lot</em> of tweaks we can make to reduce both of these things. For instance, instead of running our calculations on a normal CPU, as we’ve done above, we could do thousands of them simultaneously by taking advantage of a GPU. We could greatly reduce the amount of computation and data needed by using a convolution instead of a matrix multiplication, which basically means skipping over a bunch of the multiplications and additions for bits that you’d guess won’t be important. We could make things much faster if, instead of starting with random parameters, we start with parameters of someone else’s model that does something similar to what we want (this is called <em>transfer learning</em>).</p>
+<p>And, of course, there’s lots of helpful software out there to do this stuff for you without too much fuss. Like, say, <a href="https://docs.fast.ai">fastai</a>.</p>
+<p>Learning these things is what we teach in our <a href="https://course.fast.ai">course</a>, which, like everything we make, is totally free. So if you’re interested in learning more, do check it out!</p>
+<p>As always, if you enjoyed this notebook, please upvote it to help others find it, and to encourage me to write more. If you upvote it, be careful you don’t accidentally upvote your copy that’s created when you click “Copy &amp; Edit” – you can find my original at <a href="https://www.kaggle.com/code/jhoward/how-does-a-neural-net-really-work">this link</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"03602186c57c4392903ed6878ce3ca69":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"a","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_ef54aaa62a514225bb36b7a30c4629b9","max":7.800000000000001,"min":-2.6,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_53de9e751da74653841f711c92b34758","value":2.6}},"04c6544307484257bb086c1006048232":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"VBoxModel","state":{"_dom_classes":["widget-interact"],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"VBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"VBoxView","box_style":"","children":["IPY_MODEL_0e333a074ab240c8be1bd3c6f418d054","IPY_MODEL_6ba75b0511a9493497b21ba1870ea800","IPY_MODEL_b7e2b59f0d5b4a6fba25a442561fb522","IPY_MODEL_17f9996e9a7c409492bc129c35b164e3"],"layout":"IPY_MODEL_61931916eb3d432eabb24f9ce0701597"}},"0cf3d1695217408aa04f568659f5ac19":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"0e333a074ab240c8be1bd3c6f418d054":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"IntSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"IntSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"IntSliderView","continuous_update":true,"description":"a","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_c01963d3105b45c59ffc91db5c1d9c8d","max":9,"min":-3,"orientation":"horizontal","readout":true,"readout_format":"d","step":1,"style":"IPY_MODEL_83e13eaeee804b669bf5a84790b33c18","value":3}},"177576eb62d74bc6871592d628da479d":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"17f9996e9a7c409492bc129c35b164e3":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_5429f6b47e7f499f8c88bb6962a22193","msg_id":"","outputs":[]}},"1c9feccf1b9c444f9d54491913b2f546":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"m","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_acae924940db4ad385a130f8e4a72997","max":4.5,"min":-1.5,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_86883951902e4698ad9cce83257e9720","value":1.5}},"2064081864ee465bb0eae144e92cb45e":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"29c7f643582e4690874e6a0c9de68064":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"3c53ebb0e56a4ca7a14818cc1dbea358":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"3eb3db8becf1452fb79b54b4520e43d9":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"b1","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_3c53ebb0e56a4ca7a14818cc1dbea358","max":1.5,"min":-4.5,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_29c7f643582e4690874e6a0c9de68064","value":-1.5}},"45a9b7a8b64a4191b795c7decec2ad7c":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"53d01808f3234d6198cd7ad9300b1455":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"53de9e751da74653841f711c92b34758":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"5429f6b47e7f499f8c88bb6962a22193":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"59584f3d2c884c458ec5bfbef82c39e6":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"61931916eb3d432eabb24f9ce0701597":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"62e020b7e40e4045a6de2b5395570dfd":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"6ba75b0511a9493497b21ba1870ea800":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"IntSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"IntSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"IntSliderView","continuous_update":true,"description":"b","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_9171f02a4ea94567bd3a58f50b663d52","max":6,"min":-2,"orientation":"horizontal","readout":true,"readout_format":"d","step":1,"style":"IPY_MODEL_c504cb9901064eb09e5dd5ba0e2eeee6","value":2}},"6bc831533bf542ada652644d03d3d69a":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"7307157e900446b19322464e43f71167":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"76a6ebc5731b4354a890352d4d2cbb42":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"83e13eaeee804b669bf5a84790b33c18":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"86883951902e4698ad9cce83257e9720":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"8a2205884cbb4e9bb91ce914a743cb90":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"9171f02a4ea94567bd3a58f50b663d52":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"a30e9972494b4a94985768a6fba8f958":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"acae924940db4ad385a130f8e4a72997":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"ae03e4d27e554cb0ac823ea38818c96c":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"VBoxModel","state":{"_dom_classes":["widget-interact"],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"VBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"VBoxView","box_style":"","children":["IPY_MODEL_03602186c57c4392903ed6878ce3ca69","IPY_MODEL_cfe2fa2895754263bf9504f0b69262d8","IPY_MODEL_d40036e2abec459b88b7ffcf65911133","IPY_MODEL_c1a7e3f78f874efc980af9147834610c"],"layout":"IPY_MODEL_f8ac93466bf043f68714c2fbbb8bf66d"}},"b186e5dcf8184886b10daaa3841c00d0":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"m2","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_cb67208497284615bfa4fa99ce7735d6","max":4.5,"min":-1.5,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_db9df6c3ac8c48fc9e9443b06b4cb2e4","value":1.5}},"b7e2b59f0d5b4a6fba25a442561fb522":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"IntSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"IntSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"IntSliderView","continuous_update":true,"description":"c","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_dfe29f4572c64252a70eaa53ceea89c2","max":3,"min":-1,"orientation":"horizontal","readout":true,"readout_format":"d","step":1,"style":"IPY_MODEL_45a9b7a8b64a4191b795c7decec2ad7c","value":1}},"b7fcdefccb30419287f2ce9c55f7b735":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"be171fb8b6534dc4b06beb712380a38b":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"b2","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_0cf3d1695217408aa04f568659f5ac19","max":4.5,"min":-1.5,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_76a6ebc5731b4354a890352d4d2cbb42","value":1.5}},"c01963d3105b45c59ffc91db5c1d9c8d":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"c1a7e3f78f874efc980af9147834610c":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_2064081864ee465bb0eae144e92cb45e","msg_id":"","outputs":[]}},"c504cb9901064eb09e5dd5ba0e2eeee6":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"c6e9ff75fbd145b1978a83b63c222c3e":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_6bc831533bf542ada652644d03d3d69a","msg_id":"","outputs":[]}},"cb67208497284615bfa4fa99ce7735d6":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"ce075e8dd3664efba76a4f68761c1090":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"VBoxModel","state":{"_dom_classes":["widget-interact"],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"VBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"VBoxView","box_style":"","children":["IPY_MODEL_e9d0216251ed4a05bebccd09d113319a","IPY_MODEL_3eb3db8becf1452fb79b54b4520e43d9","IPY_MODEL_b186e5dcf8184886b10daaa3841c00d0","IPY_MODEL_be171fb8b6534dc4b06beb712380a38b","IPY_MODEL_c6e9ff75fbd145b1978a83b63c222c3e"],"layout":"IPY_MODEL_dcbbde560c1f4bd6bcd7726f275dd91b"}},"cfe2fa2895754263bf9504f0b69262d8":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"b","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_b7fcdefccb30419287f2ce9c55f7b735","max":4.199999999999999,"min":-1.4,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_59584f3d2c884c458ec5bfbef82c39e6","value":1.4}},"d40036e2abec459b88b7ffcf65911133":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"c","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_62e020b7e40e4045a6de2b5395570dfd","max":1.5,"min":-0.5,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_dd4c00ac2373499d837026a4e8a20851","value":0.5}},"db9df6c3ac8c48fc9e9443b06b4cb2e4":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"dcbbde560c1f4bd6bcd7726f275dd91b":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"dd4c00ac2373499d837026a4e8a20851":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"dfe29f4572c64252a70eaa53ceea89c2":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"e35d1a2b04c54778a20d62c925dfe676":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"SliderStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"SliderStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":"","handle_color":null}},"e9d0216251ed4a05bebccd09d113319a":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"m1","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_8a2205884cbb4e9bb91ce914a743cb90","max":1.5,"min":-4.5,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_7307157e900446b19322464e43f71167","value":-1.5}},"ef54aaa62a514225bb36b7a30c4629b9":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"f1c746db594c4b48aa5b18e7df8ef127":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"VBoxModel","state":{"_dom_classes":["widget-interact"],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"VBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"VBoxView","box_style":"","children":["IPY_MODEL_1c9feccf1b9c444f9d54491913b2f546","IPY_MODEL_f54a5a8c1ae74513a41e7e375214255a","IPY_MODEL_fa12348c65fc48f0ae7c7de9b055e582"],"layout":"IPY_MODEL_53d01808f3234d6198cd7ad9300b1455"}},"f54a5a8c1ae74513a41e7e375214255a":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatSliderModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatSliderModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"FloatSliderView","continuous_update":true,"description":"b","description_tooltip":null,"disabled":false,"layout":"IPY_MODEL_a30e9972494b4a94985768a6fba8f958","max":4.5,"min":-1.5,"orientation":"horizontal","readout":true,"readout_format":".2f","step":0.1,"style":"IPY_MODEL_e35d1a2b04c54778a20d62c925dfe676","value":1.5}},"f8ac93466bf043f68714c2fbbb8bf66d":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"fa12348c65fc48f0ae7c7de9b055e582":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_177576eb62d74bc6871592d628da479d","msg_id":"","outputs":[]}}}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

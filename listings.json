@@ -2,10 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/pandas-tests/pandas-tests.html",
-      "/posts/cuda/cuda.html",
-      "/posts/python-for-data-analysis/python-for-data-analysis.html",
-      "/posts/fastai-img-classif/fastai-img-classif.html"
+      "/posts/git/git.html"
     ]
   }
 ]

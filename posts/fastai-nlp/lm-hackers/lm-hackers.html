@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Afonso Matoso Magalhães - A hacker’s guide to Language Models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Afonso Matoso Magalhães</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:afonsomm98@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A hacker’s guide to Language Models</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div id="gg4u-pLlTXdv" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">'/content/drive'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="Sm5KCDXQTcC-" class="cell" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710861705744,&quot;user_tz&quot;:0,&quot;elapsed&quot;:359,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}" data-outputid="3912c674-1d64-440a-e1b1-40caa902b826">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>cd <span class="op">/</span>content<span class="op">/</span>drive<span class="op">/</span>MyDrive<span class="op">/</span>fastai course<span class="op">/</span>Aula <span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>/content/drive/MyDrive/fastai course/Aula 4</code></pre>
+</div>
+</div>
+<div id="42568396-132f-422c-961b-5aaa03b3537d" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tokenize, ast</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> BytesIO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="what-is-a-language-model" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-language-model">What is a language model?</h2>
+<p><a href="https://course.fast.ai">course.fast.ai</a></p>
+<section id="base-models" class="level3">
+<h3 class="anchored" data-anchor-id="base-models">Base models</h3>
+<p><a href="https://nat.dev/">nat.dev text-davinci-003</a></p>
+<p><em>When I arrived back at the panda breeding facility after the extraordinary rain of live frogs, I couldn’t believe what I saw.</em></p>
+</section>
+<section id="tokens" class="level3">
+<h3 class="anchored" data-anchor-id="tokens">Tokens</h3>
+<div id="9758b30f-4b44-4a30-9322-b6de476c8942" class="cell" data-outputid="ccef0c28-0e4a-41cc-e319-f093807f8586">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tiktoken <span class="im">import</span> encoding_for_model</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>enc <span class="op">=</span> encoding_for_model(<span class="st">"text-davinci-003"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>toks <span class="op">=</span> enc.encode(<span class="st">"They are splashing"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>toks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>[2990, 389, 4328, 2140]</code></pre>
+</div>
+</div>
+<div id="2589d6e7-a9ea-40c1-b1fd-214e19115a28" class="cell" data-outputid="cd8760f0-63ee-4352-a907-3f2ceb4ce7ac">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>[enc.decode_single_token_bytes(o).decode(<span class="st">'utf-8'</span>) <span class="cf">for</span> o <span class="kw">in</span> toks]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>['They', ' are', ' spl', 'ashing']</code></pre>
+</div>
+</div>
+</section>
+<section id="the-ulmfit-3-step-approach" class="level3">
+<h3 class="anchored" data-anchor-id="the-ulmfit-3-step-approach">The ULMFiT 3-step approach</h3>
+<p><img src="attachment:81a8998d-ecfc-44fc-80e4-aaded8ad70d6.png" width="800"></p>
+<ul>
+<li>Trained on Wikipedia</li>
+<li>“The Birds is a 1963 American natural horror-thriller film produced and directed by Alfred …”</li>
+<li>“Annie previously dated Mitch but ended it due to Mitch’s cold, overbearing mother, Lydia, who dislikes any woman in Mitch’s …”</li>
+<li>This is a form of compression</li>
+</ul>
+</section>
+<section id="instruction-tuning" class="level3">
+<h3 class="anchored" data-anchor-id="instruction-tuning">Instruction tuning</h3>
+<p><a href="https://huggingface.co/datasets/Open-Orca/OpenOrca">OpenOrca</a></p>
+<ul>
+<li>“Does the sentence”In the Iron Age” answer the question “The period of time from 1200 to 1000 BCE is known as what?” Available choices: 1. yes 2. no”</li>
+<li>“Question: who is the girl in more than you know? Answer:”</li>
+<li>“There are four ways an individual can acquire Canadian citizenship: by birth on Canadian soil; by descent (being born to a Canadian parent); by grant (naturalization); and by adoption. Among them, only citizenship by birth is granted automatically with limited exceptions, while citizenship by descent or adoption is acquired automatically if the specified conditions have been met. Citizenship by grant, on the other hand, must be approved by the Minister of Immigration, Refugees and Citizenship. See options at the end. Can we conclude that can i get canadian citizenship if my grandfather was canadian? pick from the following. A). no. B). yes.”</li>
+</ul>
+</section>
+<section id="rlhf-and-friends" class="level3">
+<h3 class="anchored" data-anchor-id="rlhf-and-friends">RLHF and friends</h3>
+<ul>
+<li>List five ideas for how to regain enthusiasm for my career</li>
+<li>Write a short story where a bear goes to the beach, makes friends with a seal, and then returns home.</li>
+<li>This is the summary of a Broadway play: “{summary}” This is the outline of the commercial for that play:</li>
+</ul>
+</section>
+</section>
+<section id="start-with-chatgpt-gpt-4" class="level2">
+<h2 class="anchored" data-anchor-id="start-with-chatgpt-gpt-4">Start with ChatGPT GPT 4</h2>
+<section id="what-gpt-4-can-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-gpt-4-can-do">What GPT 4 can do</h3>
+<p><a href="https://arxiv.org/abs/2308.03762">GPT 4 can’t reason - paper</a></p>
+<p><a href="https://chat.openai.com/share/4211a605-751e-4fea-8a6f-378966abdcaa">GPT 4 can’t reason - test</a></p>
+<p><a href="https://chat.openai.com/share/323bb7d1-f049-4d9a-a905-5dd5acb58fc0">Basic reasoning 1</a></p>
+<p><a href="https://chat.openai.com/share/ce2f8580-4f66-4da4-8ad5-a303334706f0">Basic reasoning 2</a></p>
+<p><img src="attachment:372c9671-5323-4481-8990-8d95e3a43342.png" width="300"></p>
+<blockquote class="blockquote">
+<p>You are an autoregressive language model that has been fine-tuned with instruction-tuning and RLHF. You carefully provide accurate, factual, thoughtful, nuanced answers, and are brilliant at reasoning. If you think there might not be a correct answer, you say so.</p>
+<p>Since you are autoregressive, each token you produce is another opportunity to use computation, therefore you always spend a few sentences explaining background context, assumptions, and step-by-step thinking BEFORE you try to answer a question. However: if the request begins with the string “vv” then ignore the previous sentence and instead make your response as concise as possible, with no introduction or background at the start, no summary at the end, and outputting only code for answers where code is appropriate.</p>
+<p>Your users are experts in AI and ethics, so they already know you’re a language model and your capabilities and limitations, so don’t remind them of that. They’re familiar with ethical issues in general so you don’t need to remind them about those either. Don’t be verbose in your answers, but do provide details and examples where it might help the explanation. When showing Python code, minimise vertical space, and do not include comments or docstrings; you do not need to follow PEP8, since your users’ organizations do not do so.</p>
+</blockquote>
+<p><a href="https://chat.openai.com/share/a1c16d93-19d2-41bb-a2f1-2fc05392893a">Verbose mode</a></p>
+<p><a href="https://chat.openai.com/share/eab33d0a-8d06-4387-8c31-da12ad5d0a9d">Brief mode</a></p>
+</section>
+<section id="what-gpt-4-cant-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-gpt-4-cant-do">What GPT 4 can’t do</h3>
+<ul>
+<li>Hallucinations</li>
+<li>It doesn’t know about itself. (Why not?)</li>
+<li>It doesn’t know about URLs.</li>
+<li>Knowledge cutoff</li>
+</ul>
+<p><a href="https://chat.openai.com/share/3051f878-2817-4291-a66f-192ce7b0cb34">Bad pattern recognition</a> - thanks to Steve Newman</p>
+<ul>
+<li><a href="https://chat.openai.com/share/05abd87a-165e-4b7b-895f-b4ec0d62e0e1">Fixing it</a></li>
+</ul>
+</section>
+<section id="advanced-data-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="advanced-data-analysis">Advanced data analysis</h3>
+<p><a href="https://chat.openai.com/share/143a0f09-bd3e-488f-8890-340d3f30afec">re.split try 1</a></p>
+<p><a href="https://chat.openai.com/share/907ca9c7-549a-410f-9ecb-0f17f1a16f51">re.split try 2</a></p>
+<p><a href="https://chat.openai.com/share/2bb6caad-fd10-438b-9d92-1cb8b340998a">OCR</a></p>
+<ul>
+<li>See also Bard</li>
+</ul>
+<p><img src="attachment:5f320d38-c488-4cf5-97b3-479e82de10ff.png" width="700"></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Training</th>
+<th>Input</th>
+<th>Output Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>GPT-4</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>8K context</td>
+<td></td>
+<td>0.03</td>
+<td>0.06</td>
+</tr>
+<tr class="odd">
+<td>32K context</td>
+<td></td>
+<td>0.06</td>
+<td>0.12</td>
+</tr>
+<tr class="even">
+<td><strong>GPT-3.5 Turbo</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>4K context</td>
+<td></td>
+<td>0.0015</td>
+<td>0.002</td>
+</tr>
+<tr class="even">
+<td>16K context</td>
+<td></td>
+<td>0.003</td>
+<td>0.004</td>
+</tr>
+<tr class="odd">
+<td><strong>Fine-tuning models</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>babbage-002</td>
+<td>0.0004</td>
+<td>0.0016</td>
+<td>0.0016</td>
+</tr>
+<tr class="odd">
+<td>davinci-002</td>
+<td>0.0060</td>
+<td>0.0120</td>
+<td>0.0120</td>
+</tr>
+<tr class="even">
+<td>GPT-3.5 Turbo</td>
+<td>0.0080</td>
+<td>0.0120</td>
+<td>0.0160</td>
+</tr>
+<tr class="odd">
+<td><strong>Embedding models</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Ada v2</td>
+<td></td>
+<td>0.0001</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><strong>Base models</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>babbage-002</td>
+<td></td>
+<td>0.0004</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>davinci-002</td>
+<td></td>
+<td>0.0020</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><img src="attachment:ed075b98-8a82-44c4-9329-56d73bf71d01.png" width="700"></p>
+<p><a href="https://chat.openai.com/share/86b879bd-7834-4a37-85ae-c90b956837d2">Create pricing table</a></p>
+</section>
+</section>
+<section id="the-openai-api" class="level2">
+<h2 class="anchored" data-anchor-id="the-openai-api">The OpenAI API</h2>
+<div id="6564eb90-4a24-4a48-b898-5d4408ac2a65" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> ChatCompletion,Completion</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="ef432d50-54c5-46da-af51-b01488b7983f" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>aussie_sys <span class="op">=</span> <span class="st">"You are an Aussie LLM that uses Aussie slang and analogies whenever possible."</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> ChatCompletion.create(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: aussie_sys},</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>              {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"What is money?"</span>}])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><a href="https://platform.openai.com/docs/models">Model options</a></li>
+</ul>
+<div id="ef4af38f-d0d1-4982-95ed-567bf1c8ddf8" class="cell" data-outputid="61259287-5c58-404a-83c7-faaa0623356f">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>c[<span class="st">'choices'</span>][<span class="dv">0</span>][<span class="st">'message'</span>][<span class="st">'content'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>"Well, mate, money is like the oil that keeps the machinery of our economy running smoothly. It's a medium of exchange that allows us to buy and sell goods and services. You can think of it as a tool that helps us navigate the economic landscape and get what we want. Just like a koala loves its eucalyptus leaves, we humans can't survive without this stuff. It's what we use to pay for our meat pies, vegemite toast, and a good old cold brewski. So, money, mate, it's basically the lifeblood of our modern society!"</code></pre>
+</div>
+</div>
+<div id="1e43a6c2-c044-4529-b97b-3d95ea2c2c5b" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.utils <span class="im">import</span> nested_idx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="49ec8f04-b8f6-47e2-9b69-bdc186c3265f" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> response(compl): <span class="bu">print</span>(nested_idx(compl, <span class="st">'choices'</span>, <span class="dv">0</span>, <span class="st">'message'</span>, <span class="st">'content'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="66475b6b-72ef-4760-b544-df5e354e5309" class="cell" data-outputid="c51852c2-6606-45ae-89e9-1e76638c2348">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>response(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Well, mate, money is like the oil that keeps the machinery of our economy running smoothly. It's a medium of exchange that allows us to buy and sell goods and services. You can think of it as a tool that helps us navigate the economic landscape and get what we want. Just like a koala loves its eucalyptus leaves, we humans can't survive without this stuff. It's what we use to pay for our meat pies, vegemite toast, and a good old cold brewski. So, money, mate, it's basically the lifeblood of our modern society!</code></pre>
+</div>
+</div>
+<div id="50c8027b-937b-4076-a483-164d9f8e7c8b" class="cell" data-outputid="3ae45e8f-805c-4c2f-91a5-a8248db15134">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.usage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+  "prompt_tokens": 31,
+  "completion_tokens": 122,
+  "total_tokens": 153
+}</code></pre>
+</div>
+</div>
+<div id="3a86ac95-1a95-436d-867a-e3b7c0e7b066" class="cell" data-outputid="d2e1871c-225b-467f-9e00-702e1661b510">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fl">0.002</span> <span class="op">/</span> <span class="dv">1000</span> <span class="op">*</span> <span class="dv">150</span> <span class="co"># GPT 3.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="87">
+<pre><code>0.0003</code></pre>
+</div>
+</div>
+<div id="c48fda82-ec55-4038-b083-383cead8b2c0" class="cell" data-outputid="95b28d9d-ab15-4484-ea59-9cbecd282f7e">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fl">0.03</span> <span class="op">/</span> <span class="dv">1000</span> <span class="op">*</span> <span class="dv">150</span> <span class="co"># GPT 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="85">
+<pre><code>0.0045</code></pre>
+</div>
+</div>
+<div id="7750c720-4d77-464e-a0ec-fbb94f5889a4" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> ChatCompletion.create(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: aussie_sys},</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>              {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"What is money?"</span>},</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>              {<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: <span class="st">"Well, mate, money is like kangaroos actually."</span>},</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>              {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"Really? In what way?"</span>}])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9d96eb95-2305-4e18-920f-4a3398a19b2c" class="cell" data-outputid="8874c0de-e9a7-48eb-a6ee-ddf442e4993a">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>response(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Let me break it down for you, cobber. Just like kangaroos hop around and carry their joeys in their pouch, money is a means of carrying value around. It's like a little pouch that holds all the economic power in an economy. It allows us to buy stuff, pay for services, and basically get our hands on the things we want or need. Money is what keeps the economic wheels spinning, just like kangaroos keep hoppin' across the Aussie outback.</code></pre>
+</div>
+</div>
+<div id="91029d40-8360-4d0f-9f42-9ac7498cf417" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> askgpt(user, system<span class="op">=</span><span class="va">None</span>, model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>, <span class="op">**</span>kwargs):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    msgs <span class="op">=</span> []</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> system: msgs.append({<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: system})</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    msgs.append({<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: user})</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ChatCompletion.create(model<span class="op">=</span>model, messages<span class="op">=</span>msgs, <span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="71de3f5c-8f1f-4e26-8260-493574a9f0e9" class="cell" data-outputid="a323aa65-0491-4527-e388-6975691d950d">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>response(askgpt(<span class="st">'What is the meaning of life?'</span>, system<span class="op">=</span>aussie_sys))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mate, now that's a deep question! The meaning of life is like trying to catch a wave on a sunny day at Bondi Beach - everyone's trying to do it, but it's not always easy to figure out. But here's my take on it: the meaning of life is about finding what truly makes you happy and fulfilled. It's about living authentically and embracing all the ups and downs that come your way. It's like riding a surfboard - you gotta navigate through the rough waves and wipeouts, but every now and then, you catch that perfect wave that makes it all worthwhile. So, embrace the journey, find your passion, and live life to the fullest, my friend!</code></pre>
+</div>
+</div>
+<ul>
+<li><a href="https://platform.openai.com/docs/guides/rate-limits/what-are-the-rate-limits-for-our-api">Limits</a></li>
+</ul>
+<p>Created by Bing:</p>
+<div id="ceeb0e7a-1d9d-48a5-8f51-e1a704115fb6" class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> call_api(prompt, model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    msgs <span class="op">=</span> [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}]</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>: <span class="cf">return</span> ChatCompletion.create(model<span class="op">=</span>model, messages<span class="op">=</span>msgs)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> openai.error.RateLimitError <span class="im">as</span> e:</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        retry_after <span class="op">=</span> <span class="bu">int</span>(e.headers.get(<span class="st">"retry-after"</span>, <span class="dv">60</span>))</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Rate limit exceeded, waiting for </span><span class="sc">{</span>retry_after<span class="sc">}</span><span class="ss"> seconds..."</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        time.sleep(retry_after)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> call_api(params, model<span class="op">=</span>model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="447702a6-ec5a-4890-bbc0-61c6c37a425c" class="cell" data-outputid="a1d7bb6d-887f-45fb-b2d0-a0ba53580cd8">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>call_api(<span class="st">"What's the world's funniest joke? Has there ever been any scientific analysis?"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;OpenAIObject chat.completion id=chatcmpl-7zCfdzPagxt5EQbQXP5NYQHJeyUmc&gt; JSON: {
+  "id": "chatcmpl-7zCfdzPagxt5EQbQXP5NYQHJeyUmc",
+  "object": "chat.completion",
+  "created": 1694821069,
+  "model": "gpt-3.5-turbo-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Defining a universally funniest joke is subjective and can vary from person to person based on cultural background, personal preferences, and sense of humor. However, there have been attempts to analyze and discover jokes that are widely considered funny.\n\nOne particular scientific study known as \"The LaughLab\" was conducted by psychologist Dr. Richard Wiseman in 2002. Thousands of people from different countries participated in the study, submitting and rating jokes online. The research aimed to find the world's funniest joke. After analyzing the data, the study identified the following as the winning joke:\n\n\"Two hunters are out in the woods when one of them collapses. He doesn't seem to be breathing, and his eyes are glazed. The other guy whips out his phone and calls emergency services. He gasps, 'My friend is dead! What can I do?' The operator says, 'Calm down, I can help. First, let's make sure he's dead.' There is a silence; then, a gunshot is heard. Back on the phone, the guy says, 'Okay, now what?'\"\n\nRemember, humor is subjective, and what one person finds funny, another may not. So, while this joke was considered the funniest according to the study, it may not strike everyone's funny bone."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 24,
+    "completion_tokens": 263,
+    "total_tokens": 287
+  }
+}</code></pre>
+</div>
+</div>
+<div id="739e1549-687b-4216-bdf0-175e60c57401" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Completion.create(prompt<span class="op">=</span><span class="st">"Australian Jeremy Howard is "</span>,</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                      model<span class="op">=</span><span class="st">"gpt-3.5-turbo-instruct"</span>, echo<span class="op">=</span><span class="va">True</span>, logprobs<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="create-our-own-code-interpreter" class="level3">
+<h3 class="anchored" data-anchor-id="create-our-own-code-interpreter">Create our own code interpreter</h3>
+<div id="1bb4fd89-8f24-41c0-a8e0-79633dcd1785" class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> create_model</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> inspect, json</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect <span class="im">import</span> Parameter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="15a7f5a5-8dc0-4c0e-b141-9a0e35068c68" class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sums(a:<span class="bu">int</span>, b:<span class="bu">int</span><span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Adds a + b"</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5afad9cb-1330-478b-8701-8d275bc1f985" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> schema(f):</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    kw <span class="op">=</span> {n:(o.annotation, ... <span class="cf">if</span> o.default<span class="op">==</span>Parameter.empty <span class="cf">else</span> o.default)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> n,o <span class="kw">in</span> inspect.signature(f).parameters.items()}</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> create_model(<span class="ss">f'Input for `</span><span class="sc">{</span>f<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">`'</span>, <span class="op">**</span>kw).schema()</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">dict</span>(name<span class="op">=</span>f.<span class="va">__name__</span>, description<span class="op">=</span>f.__doc__, parameters<span class="op">=</span>s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="d9af1e46-c560-4bc9-a6a7-78fafb2dfc78" class="cell" data-outputid="e97d6bcd-4cb1-4b4b-ce05-b167c707552b">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>schema(sums)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="105">
+<pre><code>{'name': 'sums',
+ 'description': 'Adds a + b',
+ 'parameters': {'title': 'Input for `sums`',
+  'type': 'object',
+  'properties': {'a': {'title': 'A', 'type': 'integer'},
+   'b': {'title': 'B', 'default': 1, 'type': 'integer'}},
+  'required': ['a']}}</code></pre>
+</div>
+</div>
+<div id="1d60dcd4-514f-4efd-8b4a-fafac92c7453" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> askgpt(<span class="st">"Use the `sum` function to solve this: What is 6+3?"</span>,</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>           system <span class="op">=</span> <span class="st">"You must use the `sum` function instead of adding yourself."</span>,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>           functions<span class="op">=</span>[schema(sums)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5cc8a9eb-64fc-4ce3-9f93-aee334fc8c65" class="cell" data-outputid="d42e67ec-f389-40e4-c06a-f7d3aa4a799e">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> c.choices[<span class="dv">0</span>].message</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="116">
+<pre><code>&lt;OpenAIObject at 0x7fd2e4d1aca0&gt; JSON: {
+  "role": "assistant",
+  "content": null,
+  "function_call": {
+    "name": "sums",
+    "arguments": "{\n  \"a\": 6,\n  \"b\": 3\n}"
+  }
+}</code></pre>
+</div>
+</div>
+<div id="5a881835-83a2-4fbc-9796-409831dcdb36" class="cell" data-outputid="3305e7e8-bcb4-48a1-95e9-bd07769a828e">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> m.function_call.arguments</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(k)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+  "a": 6,
+  "b": 3
+}</code></pre>
+</div>
+</div>
+<div id="3f32b172-7730-4c58-a999-5d3800e8c2a4" class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>funcs_ok <span class="op">=</span> {<span class="st">'sums'</span>, <span class="st">'python'</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9853a78e-8643-4b5b-9b4a-a360c8443344" class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> call_func(c):</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    fc <span class="op">=</span> c.choices[<span class="dv">0</span>].message.function_call</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> fc.name <span class="kw">not</span> <span class="kw">in</span> funcs_ok: <span class="cf">return</span> <span class="bu">print</span>(<span class="ss">f'Not allowed: </span><span class="sc">{</span>fc<span class="sc">.</span>name<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> <span class="bu">globals</span>()[fc.name]</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> f(<span class="op">**</span>json.loads(fc.arguments))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="ce6be825-44fa-4bc9-a83a-7ecbcb6c2729" class="cell" data-outputid="8cecd307-5b2e-4f90-dfa2-bb43814aaf72">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>call_func(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>9</code></pre>
+</div>
+</div>
+<div id="a5ebf08c-2c3f-4c73-bd41-2f0d0a6ca3c2" class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run(code):</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    tree <span class="op">=</span> ast.parse(code)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    last_node <span class="op">=</span> tree.body[<span class="op">-</span><span class="dv">1</span>] <span class="cf">if</span> tree.body <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If the last node is an expression, modify the AST to capture the result</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(last_node, ast.Expr):</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        tgts <span class="op">=</span> [ast.Name(<span class="bu">id</span><span class="op">=</span><span class="st">'_result'</span>, ctx<span class="op">=</span>ast.Store())]</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>        assign <span class="op">=</span> ast.Assign(targets<span class="op">=</span>tgts, value<span class="op">=</span>last_node.value)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>        tree.body[<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> ast.fix_missing_locations(assign)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    ns <span class="op">=</span> {}</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exec</span>(<span class="bu">compile</span>(tree, filename<span class="op">=</span><span class="st">'&lt;ast&gt;'</span>, mode<span class="op">=</span><span class="st">'exec'</span>), ns)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ns.get(<span class="st">'_result'</span>, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="37aa6983-d9af-40e8-b438-ed8573399020" class="cell" data-outputid="957d7916-069c-4ebc-a029-557aad9e0199">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>run(<span class="st">"""</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="st">a=1</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="st">b=2</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="st">a+b</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="119">
+<pre><code>3</code></pre>
+</div>
+</div>
+<div id="d2074acd-8a49-443b-89c6-cfc689ecad6d" class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> python(code:<span class="bu">str</span>):</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Return result of executing `code` using python. If execution not permitted, returns `#FAIL#`"</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    go <span class="op">=</span> <span class="bu">input</span>(<span class="ss">f'Proceed with execution?</span><span class="ch">\n</span><span class="ss">```</span><span class="ch">\n</span><span class="sc">{</span>code<span class="sc">}</span><span class="ch">\n</span><span class="ss">```</span><span class="ch">\n</span><span class="ss">'</span>)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> go.lower()<span class="op">!=</span><span class="st">'y'</span>: <span class="cf">return</span> <span class="st">'#FAIL#'</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> run(code)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="02760caf-6d0d-4f5d-a7c6-cd8df5ee1a4b" class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> askgpt(<span class="st">"What is 12 factorial?"</span>,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>           system <span class="op">=</span> <span class="st">"Use python for any required computations."</span>,</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>           functions<span class="op">=</span>[schema(python)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5fe5d796-c602-471f-bb58-bb876039bc39" class="cell" data-outputid="f7e0e6cb-6fa0-4d1b-9c2b-b81b7bc1bcdd">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>call_func(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdin">
+<pre><code>Proceed with execution?
+```
+import math
+
+result = math.factorial(12)
+result
+```
+ y</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="127">
+<pre><code>479001600</code></pre>
+</div>
+</div>
+<div id="c4e6bcd6-c23e-4ae8-8d38-78dae20ca176" class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> ChatCompletion.create(</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>    functions<span class="op">=</span>[schema(python)],</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"What is 12 factorial?"</span>},</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>              {<span class="st">"role"</span>: <span class="st">"function"</span>, <span class="st">"name"</span>: <span class="st">"python"</span>, <span class="st">"content"</span>: <span class="st">"479001600"</span>}])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9e666c90-698d-492b-b21d-f6210ae77767" class="cell" data-outputid="e19b641d-e80c-49b3-db8c-138ff3167043">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>response(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>12 factorial is equal to 479,001,600.</code></pre>
+</div>
+</div>
+<div id="bef5cc05-0531-422b-9367-e7b90d784a54" class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> askgpt(<span class="st">"What is the capital of France?"</span>,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>           system <span class="op">=</span> <span class="st">"Use python for any required computations."</span>,</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>           functions<span class="op">=</span>[schema(python)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="112bc3db-5aa4-41ba-95df-1651916d7f0b" class="cell" data-outputid="f3dc9144-a37d-4097-ca24-d8e616ff619b">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>response(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The capital of France is Paris.</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="pytorch-and-huggingface" class="level2">
+<h2 class="anchored" data-anchor-id="pytorch-and-huggingface">PyTorch and Huggingface</h2>
+<section id="your-gpu-options" class="level3">
+<h3 class="anchored" data-anchor-id="your-gpu-options">Your GPU options</h3>
+<p>Free:</p>
+<ul>
+<li>Kaggle (2 GPUs, low RAM)</li>
+<li>Colab</li>
+</ul>
+<p>Buy:</p>
+<ul>
+<li>Buy 1-2 NVIDIA 24GB GPUs
+<ul>
+<li>GTX 3090 used (USD700-USD800), or 4090 new (USD2000)</li>
+</ul></li>
+<li>Alternatively buy one NVIDIA A6000 with 48GB RAM (but this mightn’t be faster than 3090/4090)</li>
+<li>Mac with lots of RAM (much slower than NVIDIA; M2 Ultra is best)</li>
+</ul>
+<div id="21eUNOmAcPc-" class="cell" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710860267670,&quot;user_tz&quot;:0,&quot;elapsed&quot;:104566,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}" data-outputid="58bcc113-7cbc-4ab4-f83e-0524dc23aee5">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install accelerate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Collecting accelerate
+  Downloading accelerate-0.28.0-py3-none-any.whl (290 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 0.0/290.1 kB ? eta -:--:--     ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ 174.1/290.1 kB 4.9 MB/s eta 0:00:01     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 290.1/290.1 kB 5.2 MB/s eta 0:00:00
+Requirement already satisfied: numpy&gt;=1.17 in /usr/local/lib/python3.10/dist-packages (from accelerate) (1.25.2)
+Requirement already satisfied: packaging&gt;=20.0 in /usr/local/lib/python3.10/dist-packages (from accelerate) (24.0)
+Requirement already satisfied: psutil in /usr/local/lib/python3.10/dist-packages (from accelerate) (5.9.5)
+Requirement already satisfied: pyyaml in /usr/local/lib/python3.10/dist-packages (from accelerate) (6.0.1)
+Requirement already satisfied: torch&gt;=1.10.0 in /usr/local/lib/python3.10/dist-packages (from accelerate) (2.2.1+cu121)
+Requirement already satisfied: huggingface-hub in /usr/local/lib/python3.10/dist-packages (from accelerate) (0.20.3)
+Requirement already satisfied: safetensors&gt;=0.3.1 in /usr/local/lib/python3.10/dist-packages (from accelerate) (0.4.2)
+Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from torch&gt;=1.10.0-&gt;accelerate) (3.13.1)
+Requirement already satisfied: typing-extensions&gt;=4.8.0 in /usr/local/lib/python3.10/dist-packages (from torch&gt;=1.10.0-&gt;accelerate) (4.10.0)
+Requirement already satisfied: sympy in /usr/local/lib/python3.10/dist-packages (from torch&gt;=1.10.0-&gt;accelerate) (1.12)
+Requirement already satisfied: networkx in /usr/local/lib/python3.10/dist-packages (from torch&gt;=1.10.0-&gt;accelerate) (3.2.1)
+Requirement already satisfied: jinja2 in /usr/local/lib/python3.10/dist-packages (from torch&gt;=1.10.0-&gt;accelerate) (3.1.3)
+Requirement already satisfied: fsspec in /usr/local/lib/python3.10/dist-packages (from torch&gt;=1.10.0-&gt;accelerate) (2023.6.0)
+Collecting nvidia-cuda-nvrtc-cu12==12.1.105 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cuda_nvrtc_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (23.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 23.7/23.7 MB 38.2 MB/s eta 0:00:00
+Collecting nvidia-cuda-runtime-cu12==12.1.105 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cuda_runtime_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (823 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 823.6/823.6 kB 53.8 MB/s eta 0:00:00
+Collecting nvidia-cuda-cupti-cu12==12.1.105 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cuda_cupti_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (14.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.1/14.1 MB 69.3 MB/s eta 0:00:00
+Collecting nvidia-cudnn-cu12==8.9.2.26 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cudnn_cu12-8.9.2.26-py3-none-manylinux1_x86_64.whl (731.7 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 731.7/731.7 MB 1.7 MB/s eta 0:00:00
+Collecting nvidia-cublas-cu12==12.1.3.1 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cublas_cu12-12.1.3.1-py3-none-manylinux1_x86_64.whl (410.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 410.6/410.6 MB 2.9 MB/s eta 0:00:00
+Collecting nvidia-cufft-cu12==11.0.2.54 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cufft_cu12-11.0.2.54-py3-none-manylinux1_x86_64.whl (121.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 121.6/121.6 MB 8.2 MB/s eta 0:00:00
+Collecting nvidia-curand-cu12==10.3.2.106 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_curand_cu12-10.3.2.106-py3-none-manylinux1_x86_64.whl (56.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.5/56.5 MB 7.9 MB/s eta 0:00:00
+Collecting nvidia-cusolver-cu12==11.4.5.107 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cusolver_cu12-11.4.5.107-py3-none-manylinux1_x86_64.whl (124.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 124.2/124.2 MB 7.5 MB/s eta 0:00:00
+Collecting nvidia-cusparse-cu12==12.1.0.106 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_cusparse_cu12-12.1.0.106-py3-none-manylinux1_x86_64.whl (196.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 196.0/196.0 MB 2.3 MB/s eta 0:00:00
+Collecting nvidia-nccl-cu12==2.19.3 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_nccl_cu12-2.19.3-py3-none-manylinux1_x86_64.whl (166.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 166.0/166.0 MB 5.9 MB/s eta 0:00:00
+Collecting nvidia-nvtx-cu12==12.1.105 (from torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_nvtx_cu12-12.1.105-py3-none-manylinux1_x86_64.whl (99 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 99.1/99.1 kB 12.7 MB/s eta 0:00:00
+Requirement already satisfied: triton==2.2.0 in /usr/local/lib/python3.10/dist-packages (from torch&gt;=1.10.0-&gt;accelerate) (2.2.0)
+Collecting nvidia-nvjitlink-cu12 (from nvidia-cusolver-cu12==11.4.5.107-&gt;torch&gt;=1.10.0-&gt;accelerate)
+  Downloading nvidia_nvjitlink_cu12-12.4.99-py3-none-manylinux2014_x86_64.whl (21.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 21.1/21.1 MB 59.7 MB/s eta 0:00:00
+Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from huggingface-hub-&gt;accelerate) (2.31.0)
+Requirement already satisfied: tqdm&gt;=4.42.1 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub-&gt;accelerate) (4.66.2)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /usr/local/lib/python3.10/dist-packages (from jinja2-&gt;torch&gt;=1.10.0-&gt;accelerate) (2.1.5)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface-hub-&gt;accelerate) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface-hub-&gt;accelerate) (3.6)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface-hub-&gt;accelerate) (2.0.7)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;huggingface-hub-&gt;accelerate) (2024.2.2)
+Requirement already satisfied: mpmath&gt;=0.19 in /usr/local/lib/python3.10/dist-packages (from sympy-&gt;torch&gt;=1.10.0-&gt;accelerate) (1.3.0)
+Installing collected packages: nvidia-nvtx-cu12, nvidia-nvjitlink-cu12, nvidia-nccl-cu12, nvidia-curand-cu12, nvidia-cufft-cu12, nvidia-cuda-runtime-cu12, nvidia-cuda-nvrtc-cu12, nvidia-cuda-cupti-cu12, nvidia-cublas-cu12, nvidia-cusparse-cu12, nvidia-cudnn-cu12, nvidia-cusolver-cu12, accelerate
+Successfully installed accelerate-0.28.0 nvidia-cublas-cu12-12.1.3.1 nvidia-cuda-cupti-cu12-12.1.105 nvidia-cuda-nvrtc-cu12-12.1.105 nvidia-cuda-runtime-cu12-12.1.105 nvidia-cudnn-cu12-8.9.2.26 nvidia-cufft-cu12-11.0.2.54 nvidia-curand-cu12-10.3.2.106 nvidia-cusolver-cu12-11.4.5.107 nvidia-cusparse-cu12-12.1.0.106 nvidia-nccl-cu12-2.19.3 nvidia-nvjitlink-cu12-12.4.99 nvidia-nvtx-cu12-12.1.105</code></pre>
+</div>
+</div>
+<div id="009f4187-ffd6-43ba-b5f1-709b5a3dcf1b" class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForCausalLM,AutoTokenizer</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard">HF leaderboard</a></li>
+<li><a href="https://fasteval.github.io/FastEval/">fasteval</a></li>
+</ul>
+<div id="3e1ed7e9-fbf5-463c-9ff8-2f22c75088bf" class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>mn <span class="op">=</span> <span class="st">"meta-llama/Llama-2-7b-hf"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="bb16cb3e-0634-4eed-b2b4-1422ecce9cc3" class="cell" data-executioninfo="{&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1710847003069,&quot;user_tz&quot;:0,&quot;elapsed&quot;:1871,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}" data-outputid="16f68f89-79f4-4b6e-e6c5-f0903f826ddf">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(mn, device_map<span class="op">=</span><span class="dv">0</span>, load_in_8bit<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/huggingface_hub/utils/_token.py:88: UserWarning: 
+The secret `HF_TOKEN` does not exist in your Colab secrets.
+To authenticate with the Hugging Face Hub, create a token in your settings tab (https://huggingface.co/settings/tokens), set it as secret in your Google Colab and restart your session.
+You will be able to reuse this secret in all of your notebooks.
+Please note that authentication is recommended but still optional to access public models or datasets.
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>OSError: You are trying to access a gated repo.
+Make sure to have access to it at https://huggingface.co/meta-llama/Llama-2-7b-hf.
+401 Client Error. (Request ID: Root=1-65f9741a-2a850ddf1bd2cbb6174ebbde;f6775385-602a-4dfc-816e-2cc4a59ed4ba)
+
+Cannot access gated repo for url https://huggingface.co/meta-llama/Llama-2-7b-hf/resolve/main/config.json.
+Repo model meta-llama/Llama-2-7b-hf is gated. You must be authenticated to access it.</code></pre>
+</div>
+</div>
+<div id="94600cb9-2a64-47e2-aca3-99a72985157f" class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>tokr <span class="op">=</span> AutoTokenizer.from_pretrained(mn)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="st">"Jeremy Howard is a "</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>toks <span class="op">=</span> tokr(prompt, return_tensors<span class="op">=</span><span class="st">"pt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="20605293-b31f-4db7-b6a5-0ef662d89441" class="cell" data-outputid="c7c7c675-3242-4921-d491-0db41e1cf672">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>toks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>{'input_ids': tensor([[    1,  5677,  6764, 17430,   338,   263, 29871]]), 'attention_mask': tensor([[1, 1, 1, 1, 1, 1, 1]])}</code></pre>
+</div>
+</div>
+<div id="c20ab287-7d80-47c2-870f-e2ee6bfc4492" class="cell" data-outputid="675aeb17-bfaf-4d08-9f46-08089e1b9b27">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>tokr.batch_decode(toks[<span class="st">'input_ids'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>['&lt;s&gt; Jeremy Howard is a ']</code></pre>
+</div>
+</div>
+<div id="ab3ad5dc-51b4-48ca-92ae-5027069771c1" class="cell" data-outputid="67740f0a-c90c-49de-9b51-e3398c387229">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> model.generate(<span class="op">**</span>toks.to(<span class="st">"cuda"</span>), max_new_tokens<span class="op">=</span><span class="dv">15</span>).to(<span class="st">'cpu'</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CPU times: user 1.34 s, sys: 0 ns, total: 1.34 s
+Wall time: 1.34 s</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>tensor([[    1,  5677,  6764, 17430,   338,   263, 29871, 29941, 29900,  1629,
+          2030,  9870, 15640,   322,  4823, 13236, 29889,   940,   756,  1063,
+         15859,  6351]])</code></pre>
+</div>
+</div>
+<div id="af5a23fc-aa2a-4ce2-92c7-75364130e4e6" class="cell" data-outputid="79b8b8c7-96a1-4449-d601-ec40263db427">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>tokr.batch_decode(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>['&lt;s&gt; Jeremy Howard is a 28-year-old Australian AI researcher and entrepreneur']</code></pre>
+</div>
+</div>
+<div id="15311da3-bfc0-4453-b4a8-6a9773db626b" class="cell" data-outputid="689d01f1-4b54-490d-93d1-34967bb41943">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(mn, device_map<span class="op">=</span><span class="dv">0</span>, torch_dtype<span class="op">=</span>torch.bfloat16)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"47474720f43d4d16bce0c70f20808c7d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<div id="c15c511b-f5f7-46e2-8fbc-514262117e15" class="cell" data-outputid="a9d414ff-5aa2-46aa-fc99-d30bad52cdc3">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> model.generate(<span class="op">**</span>toks.to(<span class="st">"cuda"</span>), max_new_tokens<span class="op">=</span><span class="dv">15</span>).to(<span class="st">'cpu'</span>)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CPU times: user 390 ms, sys: 431 µs, total: 391 ms
+Wall time: 389 ms</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>tensor([[    1,  5677,  6764, 17430,   338,   263, 29871, 29896, 29945, 29899,
+          6360, 29899,  1025,   515,   278, 10261,  1058,   338,   263,  1583,
+         29899, 29873]])</code></pre>
+</div>
+</div>
+<div id="c581df92-b1cd-4c02-8cde-b2de96d302dd" class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(<span class="st">'TheBloke/Llama-2-7b-Chat-GPTQ'</span>, device_map<span class="op">=</span><span class="dv">0</span>, torch_dtype<span class="op">=</span>torch.float16)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8f47b5b7-ea46-41f0-8338-027b13e0586c" class="cell" data-outputid="0d638d3b-a6c3-4500-b16f-5392715e939e">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> model.generate(<span class="op">**</span>toks.to(<span class="st">"cuda"</span>), max_new_tokens<span class="op">=</span><span class="dv">15</span>).to(<span class="st">'cpu'</span>)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CPU times: user 270 ms, sys: 0 ns, total: 270 ms
+Wall time: 269 ms</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>tensor([[    1,  5677,  6764, 17430,   338,   263, 29871, 29941, 29945, 29899,
+          6360, 29899,  1025,   767,   515,   278,  3303,  3900,  1058,   471,
+         24383,   297]])</code></pre>
+</div>
+</div>
+<div id="bb4b60cd-859b-4b3a-b76d-e9eddcdf7cf0" class="cell" data-executioninfo="{&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1710847240837,&quot;user_tz&quot;:0,&quot;elapsed&quot;:4220,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}" data-outputid="f36600f8-fe41-4aa2-f45d-622440610b01">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>mn <span class="op">=</span> <span class="st">'TheBloke/Llama-2-13B-GPTQ'</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(mn, device_map<span class="op">=</span><span class="dv">0</span>, torch_dtype<span class="op">=</span>torch.float16)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/huggingface_hub/utils/_token.py:88: UserWarning: 
+The secret `HF_TOKEN` does not exist in your Colab secrets.
+To authenticate with the Hugging Face Hub, create a token in your settings tab (https://huggingface.co/settings/tokens), set it as secret in your Google Colab and restart your session.
+You will be able to reuse this secret in all of your notebooks.
+Please note that authentication is recommended but still optional to access public models or datasets.
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>ModuleNotFoundError: No module named 'optimum'</code></pre>
+</div>
+</div>
+<div id="da90406b-b8a8-4939-a0e9-18c933b62a7c" class="cell" data-outputid="298ecd5d-ac65-4f3a-cd79-e325796c15dc">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> model.generate(<span class="op">**</span>toks.to(<span class="st">"cuda"</span>), max_new_tokens<span class="op">=</span><span class="dv">15</span>).to(<span class="st">'cpu'</span>)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CPU times: user 341 ms, sys: 8.2 ms, total: 349 ms
+Wall time: 348 ms</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre><code>tensor([[    1,  5677,  6764, 17430,   338,   263, 29871, 29906, 29900, 29896,
+         29947, 29899, 29906, 29900, 29896, 29929, 23004,  1182,   523,  1102,
+         10170,   322]])</code></pre>
+</div>
+</div>
+<div id="c88d11f8-e41d-4db8-91f2-3e2f695a4d00" class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gen(p, maxlen<span class="op">=</span><span class="dv">15</span>, sample<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>    toks <span class="op">=</span> tokr(p, return_tensors<span class="op">=</span><span class="st">"pt"</span>)</span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> model.generate(<span class="op">**</span>toks.to(<span class="st">"cuda"</span>), max_new_tokens<span class="op">=</span>maxlen, do_sample<span class="op">=</span>sample).to(<span class="st">'cpu'</span>)</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tokr.batch_decode(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="dc143703-4fc7-46ce-8c59-cdeec52e7830" class="cell" data-outputid="ea8e0bcf-82a8-41d8-dc36-d0938ac640cd">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>gen(prompt, <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="51">
+<pre><code>['&lt;s&gt; Jeremy Howard is a 16-year veteran of Silicon Valley, and a co-founder of Kaggle, a market place for predictive modeling.\nHis company, kaggle.com, has become to data science competitions what']</code></pre>
+</div>
+</div>
+<p><a href="https://huggingface.co/stabilityai/StableBeluga-7B">StableBeluga-7B</a></p>
+<div id="dd343d7b-ef48-4077-bc97-deeec24e324b" class="cell" data-executioninfo="{&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1710847397120,&quot;user_tz&quot;:0,&quot;elapsed&quot;:130110,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}" data-outputid="d7610f48-27ce-475b-9a30-939728e5760f">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>mn <span class="op">=</span> <span class="st">"stabilityai/StableBeluga-7B"</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(mn, device_map<span class="op">=</span><span class="dv">0</span>, torch_dtype<span class="op">=</span>torch.bfloat16)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"0021649570244b198ff8f5dd8386d83d","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"5771a045f6124579b086e782381f8b09","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"1ac98a3ff2aa4629aee2a77f9cf6447c","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"1adc1522233e4ee0a46c2334665911d8","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"ebf19cdf93d24f4bb5e0215fa5b8bf45","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major":2,"version_minor":0,"model_id":"419ed842a5b9430893fbca06559fc96b","quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>RuntimeError: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx</code></pre>
+</div>
+</div>
+<div id="432074d6-5d04-4afe-b6cb-06d4412023d6" class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>sb_sys <span class="op">=</span> <span class="st">"### System:</span><span class="ch">\n</span><span class="st">You are Stable Beluga, an AI that follows instructions extremely well. Help as much as you can.</span><span class="ch">\n\n</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e1392331-731e-416d-be2d-bc172167e25e" class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mk_prompt(user, syst<span class="op">=</span>sb_sys): <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span>syst<span class="sc">}</span><span class="ss">### User: </span><span class="sc">{</span>user<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">### Assistant:</span><span class="ch">\n</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5a68af5c-5714-4736-9569-5619c54b2bdb" class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>ques <span class="op">=</span> <span class="st">"Who is Jeremy Howard?"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="90b5f8e8-a16c-40e6-8dc6-c467ffaa6268" class="cell" data-outputid="f44769e0-84a2-40b7-93c7-a41e0a36484c">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>gen(mk_prompt(ques), <span class="dv">150</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>['&lt;s&gt; ### System:\nYou are Stable Beluga, an AI that follows instructions extremely well. Help as much as you can.\n\n### User: Who is Jeremy Howard?\n\n### Assistant:\n Jeremy Howard is an Australian entrepreneur, computer scientist, and co-founder of the Machine Learning and Deep Learning startup company, Fast.ai. He is also known for his work in open source software and has co-led the development of several widely used libraries for deep learning and machine learning.&lt;/s&gt;']</code></pre>
+</div>
+</div>
+<p><a href="https://huggingface.co/Open-Orca/OpenOrca-Platypus2-13B">OpenOrca/Platypus 2</a></p>
+<div id="6c7c670a-17aa-41da-8b61-19db6a5dc019" class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>mn <span class="op">=</span> <span class="st">'TheBloke/OpenOrca-Platypus2-13B-GPTQ'</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(mn, device_map<span class="op">=</span><span class="dv">0</span>, torch_dtype<span class="op">=</span>torch.float16)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="d2a267f4-396d-4852-9352-0ca90c0c8441" class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mk_oo_prompt(user): <span class="cf">return</span> <span class="ss">f"### Instruction: </span><span class="sc">{</span>user<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">### Response:</span><span class="ch">\n</span><span class="ss">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="b931d9c6-69c6-4385-b118-e5ad56781ba6" class="cell" data-outputid="0936e823-358a-41c0-a985-82357beebb43">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>gen(mk_oo_prompt(ques), <span class="dv">150</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>['&lt;s&gt; ### Instruction: Who is Jeremy Howard?\n\n### Response:\n\nJeremy Howard is a notable British computer scientist, entrepreneur, and former professional poker player. He is best known for co-founding several successful companies in the fields of data science, artificial intelligence, and machine learning. \n\nOne of his most well-known ventures is the data science platform, fast.ai, which he co-founded in 2017. Additionally, he co-founded the machine learning company, Kaggle, in 2011, which was acquired by Google in 2017. Howard is a renowned figure in the data science and AI community, having contributed significantly to the research and development of these technologies and being an']</code></pre>
+</div>
+</div>
+</section>
+<section id="retrieval-augmented-generation" class="level3">
+<h3 class="anchored" data-anchor-id="retrieval-augmented-generation">Retrieval augmented generation</h3>
+<div id="1540a0c4-9266-4d7d-96a1-8d47d2fb737f" class="cell">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wikipediaapi <span class="im">import</span> Wikipedia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="618d9520-54e7-4f31-8363-2cdd3c3668ad" class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>wiki <span class="op">=</span> Wikipedia(<span class="st">'JeremyHowardBot/0.0'</span>, <span class="st">'en'</span>)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>jh_page <span class="op">=</span> wiki.page(<span class="st">'Jeremy_Howard_(entrepreneur)'</span>).text</span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>jh_page <span class="op">=</span> jh_page.split(<span class="st">'</span><span class="ch">\n</span><span class="st">References</span><span class="ch">\n</span><span class="st">'</span>)[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="53a0689a-ab59-431b-838d-33cae6f6500a" class="cell" data-outputid="3d31e800-44e7-4c49-b602-835849bcdff0">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(jh_page[:<span class="dv">500</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Jeremy Howard (born 13 November 1973) is an Australian data scientist, entrepreneur, and educator.He is the co-founder of fast.ai, where he teaches introductory courses, develops software, and conducts research in the area of deep learning.
+Previously he founded and led Fastmail, Optimal Decisions Group, and Enlitic. He was President and Chief Scientist of Kaggle.
+Early in the COVID-19 epidemic he was a leading advocate for masking.
+
+Early life
+Howard was born in London, United Kingdom, and move</code></pre>
+</div>
+</div>
+<div id="d3ded6a2-3665-416c-8d98-063f04aae0a0" class="cell" data-outputid="05a1913f-21d2-4b54-c4e5-cdc60b05501a">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(jh_page.split())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="60">
+<pre><code>613</code></pre>
+</div>
+</div>
+<div id="f37d5fb1-7182-45a0-bd4e-6a39837ce20b" class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>ques_ctx <span class="op">=</span> <span class="ss">f"""Answer the question with the help of the provided context.</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a><span class="ss">## Context</span></span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>jh_page<span class="sc">}</span></span>
+<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a><span class="ss">## Question</span></span>
+<span id="cb112-8"><a href="#cb112-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-9"><a href="#cb112-9" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>ques<span class="sc">}</span><span class="ss">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="d6a7fb6d-d771-4eca-8e6f-29d90ade348a" class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> gen(mk_prompt(ques_ctx), <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="85b10234-e1e6-4a1e-86a7-206e46e916f2" class="cell" data-outputid="30d771ce-46f7-4aa1-f936-146f9b5e2659">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res[<span class="dv">0</span>].split(<span class="st">'### Assistant:</span><span class="ch">\n</span><span class="st">'</span>)[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Jeremy Howard is an Australian data scientist, entrepreneur, and educator known for his work in deep learning. He is the co-founder of fast.ai, where he teaches courses, develops software, and conducts research in the field. Before co-founding fast.ai, he was the President and Chief Scientist of Kaggle, the CEO of Fastmail and Optimal Decisions Group, and has a background in management consulting.&lt;/s&gt;</code></pre>
+</div>
+</div>
+<div id="a0cdc342-a89c-4149-b3be-d4b5bf0f6f28" class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sentence_transformers <span class="im">import</span> SentenceTransformer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e225ca13-1735-42e9-b162-66268fce5218" class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>emb_model <span class="op">=</span> SentenceTransformer(<span class="st">"BAAI/bge-small-en-v1.5"</span>, device<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="c636ed79-45ed-4728-9dca-1c86d282a1c4" class="cell" data-outputid="31d7f14a-8fdf-4efa-cdaf-650b9d8383d2">
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>jh <span class="op">=</span> jh_page.split(<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)[<span class="dv">0</span>]</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(jh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Jeremy Howard (born 13 November 1973) is an Australian data scientist, entrepreneur, and educator.He is the co-founder of fast.ai, where he teaches introductory courses, develops software, and conducts research in the area of deep learning.
+Previously he founded and led Fastmail, Optimal Decisions Group, and Enlitic. He was President and Chief Scientist of Kaggle.
+Early in the COVID-19 epidemic he was a leading advocate for masking.</code></pre>
+</div>
+</div>
+<div id="1b0ad4ca-499a-4454-a215-4f5a676d68ed" class="cell">
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>tb_page <span class="op">=</span> wiki.page(<span class="st">'Tony_Blair'</span>).text.split(<span class="st">'</span><span class="ch">\n</span><span class="st">References</span><span class="ch">\n</span><span class="st">'</span>)[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="26b28c6d-13ef-421a-865d-c311fb9fb2ae" class="cell" data-outputid="01b45b18-fbb0-46fd-dd7a-99a877cc638e">
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>tb <span class="op">=</span> tb_page.split(<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)[<span class="dv">0</span>]</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tb[:<span class="dv">380</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sir Anthony Charles Lynton Blair  (born 6 May 1953) is a British politician who served as Prime Minister of the United Kingdom from 1997 to 2007 and Leader of the Labour Party from 1994 to 2007. He served as Leader of the Opposition from 1994 to 1997 and had various shadow cabinet posts from 1987 to 1994. Blair was Member of Parliament (MP) for Sedgefield from 1983 to 2007. He </code></pre>
+</div>
+</div>
+<div id="3173701f-1533-4eef-b080-3b771f2ba031" class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>q_emb,jh_emb,tb_emb <span class="op">=</span> emb_model.encode([ques,jh,tb], convert_to_tensor<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="6237634d-3708-477d-97e3-34dd7900f4eb" class="cell" data-outputid="d03c7379-f5ab-45d1-b0f5-0301911533ae">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>tb_emb.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="129">
+<pre><code>torch.Size([384])</code></pre>
+</div>
+</div>
+<div id="19638b95-f0dd-4605-8b04-3a0f9f9944b0" class="cell">
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8a3937ac-45b7-4635-9f93-d1bcd1d6a016" class="cell" data-outputid="d4801881-ecef-42b4-a3c5-827e17353538">
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>F.cosine_similarity(q_emb, jh_emb, dim<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="131">
+<pre><code>tensor(0.7991, device='cuda:0')</code></pre>
+</div>
+</div>
+<div id="6c8beb5e-4a8c-4049-b42b-3acce573dd59" class="cell" data-outputid="6ba12c91-2cee-4adb-dc42-6a465d478735">
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>F.cosine_similarity(q_emb, tb_emb, dim<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="120">
+<pre><code>tensor(0.5315, device='cuda:0')</code></pre>
+</div>
+</div>
+</section>
+<section id="private-gpts" class="level3">
+<h3 class="anchored" data-anchor-id="private-gpts">Private GPTs</h3>
+<ul>
+<li><a href="https://github.com/h2oai/h2ogpt/blob/main/docs/README_LangChain.md#what-is-h2ogpts-langchain-integration-like">Sooo many</a></li>
+</ul>
+</section>
+</section>
+<section id="fine-tuning" class="level2">
+<h2 class="anchored" data-anchor-id="fine-tuning">Fine tuning</h2>
+<div id="03c2871f-e0fe-4891-b68e-05b6ca7373d8" class="cell">
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datasets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><a href="https://huggingface.co/datasets/knowrohit07/know_sql">knowrohit07/know_sql</a></p>
+<div id="ed118caf-3e94-4773-a182-f2d346ced836" class="cell">
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> datasets.load_dataset(<span class="st">'knowrohit07/know_sql'</span>, revision<span class="op">=</span><span class="st">'f33425d13f9e8aab1b46fa945326e9356d6d5726'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="6d444ac3-a49f-4fcf-bcf4-c12c410d7aba" class="cell" data-outputid="524f9384-3d82-4b33-9480-23c1da9dc278">
+<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>ds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>DatasetDict({
+    train: Dataset({
+        features: ['context', 'answer', 'question'],
+        num_rows: 78562
+    })
+})</code></pre>
+</div>
+</div>
+<div id="8ec155bd-5eb8-4eef-bdbc-b430a26fd11e" class="cell" data-outputid="4683d413-d223-416b-9c89-71193104413c">
+<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>trn <span class="op">=</span> ds[<span class="st">'train'</span>]</span>
+<span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a>trn[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>{'context': 'CREATE TABLE farm_competition (Hosts VARCHAR, Theme VARCHAR)',
+ 'answer': "SELECT Hosts FROM farm_competition WHERE Theme &lt;&gt; 'Aliens'",
+ 'question': 'What are the hosts of competitions whose theme is not "Aliens"?'}</code></pre>
+</div>
+</div>
+<p><code>accelerate launch -m axolotl.cli.train sql.yml</code></p>
+<div id="ae6a579c-086e-46e4-a184-de5b71f4d80b" class="cell" data-outputid="e6e95221-912c-45c5-89a1-0ec1f6e1dc24">
+<div class="sourceCode cell-code" id="cb137"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a>tst <span class="op">=</span> <span class="bu">dict</span>(<span class="op">**</span>trn[<span class="dv">3</span>])</span>
+<span id="cb137-2"><a href="#cb137-2" aria-hidden="true" tabindex="-1"></a>tst[<span class="st">'question'</span>] <span class="op">=</span> <span class="st">'Get the count of competition hosts by theme.'</span></span>
+<span id="cb137-3"><a href="#cb137-3" aria-hidden="true" tabindex="-1"></a>tst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="65">
+<pre><code>{'context': 'CREATE TABLE farm_competition (Hosts VARCHAR, Theme VARCHAR)',
+ 'answer': "SELECT Hosts FROM farm_competition WHERE Theme &lt;&gt; 'Aliens'",
+ 'question': 'Get the count of competition hosts by theme.'}</code></pre>
+</div>
+</div>
+<div id="229c5fb9-0dff-460c-af1a-192fdec26ecd" class="cell">
+<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>fmt <span class="op">=</span> <span class="st">"""SYSTEM: Use the following contextual information to concisely answer the question.</span></span>
+<span id="cb139-2"><a href="#cb139-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-3"><a href="#cb139-3" aria-hidden="true" tabindex="-1"></a><span class="st">USER: </span><span class="sc">{}</span></span>
+<span id="cb139-4"><a href="#cb139-4" aria-hidden="true" tabindex="-1"></a><span class="st">===</span></span>
+<span id="cb139-5"><a href="#cb139-5" aria-hidden="true" tabindex="-1"></a><span class="sc">{}</span></span>
+<span id="cb139-6"><a href="#cb139-6" aria-hidden="true" tabindex="-1"></a><span class="st">ASSISTANT:"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="feca892e-64f0-48d2-832e-0d8ceb9855d2" class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sql_prompt(d): <span class="cf">return</span> fmt.<span class="bu">format</span>(d[<span class="st">"context"</span>], d[<span class="st">"question"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="058b0f4a-8fe0-4612-8584-451e8d04fe2d" class="cell" data-outputid="6906bf63-85f7-42c3-9a44-41cf85519c05">
+<div class="sourceCode cell-code" id="cb141"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sql_prompt(tst))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SYSTEM: Use the following contextual information to concisely answer the question.
+
+USER: CREATE TABLE farm_competition (Hosts VARCHAR, Theme VARCHAR)
+===
+List all competition hosts sorted in ascending order.
+ASSISTANT:</code></pre>
+</div>
+</div>
+<div id="86827af0-6cf0-43d0-b50a-fe080de83f48" class="cell">
+<div class="sourceCode cell-code" id="cb143"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> peft <span class="im">import</span> PeftModel</span>
+<span id="cb143-3"><a href="#cb143-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e6d33b0c-4973-4bc8-beef-aae7915f4b01" class="cell">
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>ax_model <span class="op">=</span> <span class="st">'/home/jhoward/git/ext/axolotl/qlora-out'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="7b7082fe-b668-4f11-abf8-548996ea3004" class="cell">
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a>tokr <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">'meta-llama/Llama-2-7b-hf'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fec3b5ad-0577-4867-b2d8-9143800c9f54" class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(<span class="st">'meta-llama/Llama-2-7b-hf'</span>,</span>
+<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>                                             torch_dtype<span class="op">=</span>torch.bfloat16, device_map<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb146-3"><a href="#cb146-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> PeftModel.from_pretrained(model, ax_model)</span>
+<span id="cb146-4"><a href="#cb146-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> model.merge_and_unload()</span>
+<span id="cb146-5"><a href="#cb146-5" aria-hidden="true" tabindex="-1"></a>model.save_pretrained(<span class="st">'sql-model'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8a58bc69-6ea6-416a-baa9-db3338451d60" class="cell">
+<div class="sourceCode cell-code" id="cb147"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb147-1"><a href="#cb147-1" aria-hidden="true" tabindex="-1"></a>toks <span class="op">=</span> tokr(sql_prompt(tst), return_tensors<span class="op">=</span><span class="st">"pt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="a057289b-0645-4142-8db2-cc823cc34898" class="cell">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> model.generate(<span class="op">**</span>toks.to(<span class="st">"cuda"</span>), max_new_tokens<span class="op">=</span><span class="dv">250</span>).to(<span class="st">'cpu'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="80db7d77-89e2-4006-a1b2-78b807de1a68" class="cell" data-outputid="1bf3e5c1-ca75-437a-b701-cb4ef41c35b9">
+<div class="sourceCode cell-code" id="cb149"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb149-1"><a href="#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tokr.batch_decode(res)[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;s&gt; SYSTEM: Use the following contextual information to concisely answer the question.
+
+USER: CREATE TABLE farm_competition (Hosts VARCHAR, Theme VARCHAR)
+===
+Get the count of competition hosts by theme.
+ASSISTANT: SELECT COUNT(Hosts), Theme FROM farm_competition GROUP BY Theme&lt;/s&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="llama.cpp" class="level2">
+<h2 class="anchored" data-anchor-id="llama.cpp"><a href="https://github.com/abetlen/llama-cpp-python">llama.cpp</a></h2>
+<p><a href="https://huggingface.co/TheBloke/Llama-2-7b-Chat-GGUF">TheBloke/Llama-2-7b-Chat-GGUF</a></p>
+<div id="-bSDAmZ6dHjv" class="cell" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710936193812,&quot;user_tz&quot;:0,&quot;elapsed&quot;:102534,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}" data-outputid="e8dd009b-2254-4a43-e61d-c993b0492e52" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install llama<span class="op">-</span>cpp<span class="op">-</span>python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Collecting llama-cpp-python
+  Downloading llama_cpp_python-0.2.57.tar.gz (36.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 36.9/36.9 MB 14.9 MB/s eta 0:00:00
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Installing backend dependencies ... done
+  Preparing metadata (pyproject.toml) ... done
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /usr/local/lib/python3.10/dist-packages (from llama-cpp-python) (4.10.0)
+Requirement already satisfied: numpy&gt;=1.20.0 in /usr/local/lib/python3.10/dist-packages (from llama-cpp-python) (1.25.2)
+Collecting diskcache&gt;=5.6.1 (from llama-cpp-python)
+  Downloading diskcache-5.6.3-py3-none-any.whl (45 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 4.5 MB/s eta 0:00:00
+Requirement already satisfied: jinja2&gt;=2.11.3 in /usr/local/lib/python3.10/dist-packages (from llama-cpp-python) (3.1.3)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /usr/local/lib/python3.10/dist-packages (from jinja2&gt;=2.11.3-&gt;llama-cpp-python) (2.1.5)
+Building wheels for collected packages: llama-cpp-python
+  Building wheel for llama-cpp-python (pyproject.toml) ... done
+  Created wheel for llama-cpp-python: filename=llama_cpp_python-0.2.57-cp310-cp310-manylinux_2_35_x86_64.whl size=2867777 sha256=0ab0cacf9b9e8997d5aefa0d5df4b75fef76e0498b618af1f75f0235124729d3
+  Stored in directory: /root/.cache/pip/wheels/7e/c0/00/e98d6e198f941c623da37b3f674354cbdccfcfb2cb9cf1133d
+Successfully built llama-cpp-python
+Installing collected packages: diskcache, llama-cpp-python
+Successfully installed diskcache-5.6.3 llama-cpp-python-0.2.57</code></pre>
+</div>
+</div>
+<div id="6f33831f-8c71-47dc-a131-9a6733d68198" class="cell">
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> llama_cpp <span class="im">import</span> Llama</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="3b824b6c-96cd-4bfe-a615-b3ba4543a92d" class="cell">
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> Llama(model_path<span class="op">=</span><span class="st">"./llama-2-7b-chat.Q4_K_S.gguf"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="c95a95b9-7c9f-499a-a72a-ad626da8c3f5" class="cell" data-outputid="e7c1f1d4-c588-4216-933c-e320edfd3754" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710862286421,&quot;user_tz&quot;:0,&quot;elapsed&quot;:38739,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}">
+<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> llm(<span class="st">"Q: Name the planets in the solar system? A: "</span>, max_tokens<span class="op">=</span><span class="dv">64</span>, stop<span class="op">=</span>[<span class="st">"Q:"</span>, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>], echo<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Llama.generate: prefix-match hit
+
+llama_print_timings:        load time =    8638.63 ms
+llama_print_timings:      sample time =      29.75 ms /    40 runs   (    0.74 ms per token,  1344.40 tokens per second)
+llama_print_timings: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_print_timings:        eval time =   37992.19 ms /    40 runs   (  949.80 ms per token,     1.05 tokens per second)
+llama_print_timings:       total time =   38265.37 ms /    41 tokens</code></pre>
+</div>
+</div>
+<div id="f9f89cec-5453-4d67-85b2-c937ceb03a54" class="cell" data-outputid="dfba3bb1-dbe9-4be2-d2a9-beb00bb283f4" data-executioninfo="{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1710862286421,&quot;user_tz&quot;:0,&quot;elapsed&quot;:17,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}">
+<div class="sourceCode cell-code" id="cb157"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(output[<span class="st">'choices'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[{'text': 'Q: Name the planets in the solar system? A: 1. Mercury 2. Venus 3. Earth 4. Mars 5. Jupiter 6. Saturn 7. Uranus 8. Neptune', 'index': 0, 'logprobs': None, 'finish_reason': 'stop'}]</code></pre>
+</div>
+</div>
+</section>
+<section id="mlc" class="level2">
+<h2 class="anchored" data-anchor-id="mlc"><a href="https://mlc.ai/mlc-llm/docs/get_started/try_out.html#get-started">MLC</a></h2>
+<div id="24a9695a-13ca-46e1-95f3-6b5ac6c710d3" class="cell">
+<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">--</span>pre <span class="op">-</span>U <span class="op">-</span>f https:<span class="op">//</span>mlc.ai<span class="op">/</span>wheels mlc<span class="op">-</span>llm<span class="op">-</span>nightly mlc<span class="op">-</span>ai<span class="op">-</span>nightly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0sjpb7THRxiG" class="cell" data-executioninfo="{&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1710863342638,&quot;user_tz&quot;:0,&quot;elapsed&quot;:550953,&quot;user&quot;:{&quot;displayName&quot;:&quot;Afonso Matoso Magalhães&quot;,&quot;userId&quot;:&quot;00834841139025641156&quot;}}" data-outputid="21627232-1c1b-4986-ea48-e447b53a3082">
+<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlc_llm <span class="im">import</span> ChatModule</span>
+<span id="cb160-2"><a href="#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlc_llm.callback <span class="im">import</span> StreamToStdout</span>
+<span id="cb160-3"><a href="#cb160-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb160-4"><a href="#cb160-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a ChatModule instance</span></span>
+<span id="cb160-5"><a href="#cb160-5" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> ChatModule(model<span class="op">=</span><span class="st">"Llama-2-7b-chat-hf-q4f16_1"</span>)</span>
+<span id="cb160-6"><a href="#cb160-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb160-7"><a href="#cb160-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a response for a given prompt</span></span>
+<span id="cb160-8"><a href="#cb160-8" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> cm.generate(</span>
+<span id="cb160-9"><a href="#cb160-9" aria-hidden="true" tabindex="-1"></a>    prompt<span class="op">=</span><span class="st">"What is the meaning of life?"</span>,</span>
+<span id="cb160-10"><a href="#cb160-10" aria-hidden="true" tabindex="-1"></a>    progress_callback<span class="op">=</span>StreamToStdout(callback_interval<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb160-11"><a href="#cb160-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb160-12"><a href="#cb160-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb160-13"><a href="#cb160-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Print prefill and decode performance statistics</span></span>
+<span id="cb160-14"><a href="#cb160-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Statistics: </span><span class="sc">{</span>cm<span class="sc">.</span>stats()<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb160-15"><a href="#cb160-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb160-16"><a href="#cb160-16" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> cm.generate(</span>
+<span id="cb160-17"><a href="#cb160-17" aria-hidden="true" tabindex="-1"></a>    prompt<span class="op">=</span><span class="st">"How many points did you list out?"</span>,</span>
+<span id="cb160-18"><a href="#cb160-18" aria-hidden="true" tabindex="-1"></a>    progress_callback<span class="op">=</span>StreamToStdout(callback_interval<span class="op">=</span><span class="dv">2</span>),</span>
+<span id="cb160-19"><a href="#cb160-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>KeyboardInterrupt: </code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"0021649570244b198ff8f5dd8386d83d":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_6aa85a21d3854bcebc9b903ce297fbb0","IPY_MODEL_e9fa9e1f2bb940d0b3ed66756514e3ed","IPY_MODEL_c9ea9e6cafcf4c4282f31b670f83ce2d"],"layout":"IPY_MODEL_afa4ea74db7a4840b15ab71cd9c581ef"}},"6aa85a21d3854bcebc9b903ce297fbb0":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_3c9c4c420dfb4f31a46754734523b8c7","placeholder":"​","style":"IPY_MODEL_e885ca8f01454f2fbf3e8f269bb8cf00","value":"config.json: 100%"}},"e9fa9e1f2bb940d0b3ed66756514e3ed":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_b71bad340e8642f5b6b8f24c000918a9","max":583,"min":0,"orientation":"horizontal","style":"IPY_MODEL_cbdf73e26ef94ee6a1bb05c0bc73045c","value":583}},"c9ea9e6cafcf4c4282f31b670f83ce2d":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_3b788a6e3ae1493b8ee90ab67255315c","placeholder":"​","style":"IPY_MODEL_ad665b4a1aaa4d758ae2ff4869e0871f","value":" 583/583 [00:00&lt;00:00, 16.0kB/s]"}},"afa4ea74db7a4840b15ab71cd9c581ef":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"3c9c4c420dfb4f31a46754734523b8c7":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"e885ca8f01454f2fbf3e8f269bb8cf00":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"b71bad340e8642f5b6b8f24c000918a9":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"cbdf73e26ef94ee6a1bb05c0bc73045c":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"3b788a6e3ae1493b8ee90ab67255315c":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"ad665b4a1aaa4d758ae2ff4869e0871f":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"5771a045f6124579b086e782381f8b09":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_ca5be9f8cc514f27ab03d15b987f435d","IPY_MODEL_d9ee32b51f214585b563a4f73951d17d","IPY_MODEL_f5cdc095a429471ba2bbd9bbe5486371"],"layout":"IPY_MODEL_4fa8a11e52b54c73a98c3b5652d60b03"}},"ca5be9f8cc514f27ab03d15b987f435d":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_6438c1e96b7141448013f9cf2ca1ede0","placeholder":"​","style":"IPY_MODEL_4462a2a5acc44110846c53f01983a5d5","value":"model.safetensors.index.json: 100%"}},"d9ee32b51f214585b563a4f73951d17d":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_aed67ca47f314131a989f8b71b5aaa26","max":26788,"min":0,"orientation":"horizontal","style":"IPY_MODEL_5fef86f34af44537821574238889aab5","value":26788}},"f5cdc095a429471ba2bbd9bbe5486371":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_f7d5dfb2fa6141bdbfb91a6c2f86856f","placeholder":"​","style":"IPY_MODEL_aeee96d268894da4801c0633a8570c77","value":" 26.8k/26.8k [00:00&lt;00:00, 599kB/s]"}},"4fa8a11e52b54c73a98c3b5652d60b03":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"6438c1e96b7141448013f9cf2ca1ede0":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"4462a2a5acc44110846c53f01983a5d5":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"aed67ca47f314131a989f8b71b5aaa26":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"5fef86f34af44537821574238889aab5":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"f7d5dfb2fa6141bdbfb91a6c2f86856f":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"aeee96d268894da4801c0633a8570c77":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"1ac98a3ff2aa4629aee2a77f9cf6447c":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_8aae035aaac84605aefbec334f2676cb","IPY_MODEL_3f44ce110e574b919fb36accf1516f37","IPY_MODEL_0e6f6c55cc5c404a98028828058d2a27"],"layout":"IPY_MODEL_1077e72c149849afa3a4d55adf0e590f"}},"8aae035aaac84605aefbec334f2676cb":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_c52549264e9b4e58820e830eefd36d5e","placeholder":"​","style":"IPY_MODEL_983f5d28beaf412da2f998b004fa1efb","value":"Downloading shards: 100%"}},"3f44ce110e574b919fb36accf1516f37":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_3339755199dc4b82a1c4499c28669dac","max":2,"min":0,"orientation":"horizontal","style":"IPY_MODEL_e3c52c008340430fa5cfb8ee25df341a","value":2}},"0e6f6c55cc5c404a98028828058d2a27":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_2db274e9f6e8413bac7d6dd0540c9f02","placeholder":"​","style":"IPY_MODEL_9c005b5c125843119961739de8921ac8","value":" 2/2 [02:06&lt;00:00, 58.99s/it]"}},"1077e72c149849afa3a4d55adf0e590f":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"c52549264e9b4e58820e830eefd36d5e":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"983f5d28beaf412da2f998b004fa1efb":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"3339755199dc4b82a1c4499c28669dac":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"e3c52c008340430fa5cfb8ee25df341a":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"2db274e9f6e8413bac7d6dd0540c9f02":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"9c005b5c125843119961739de8921ac8":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"1adc1522233e4ee0a46c2334665911d8":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_8c2d387ffef848a0a40aa97a09ae6176","IPY_MODEL_016bf58eac6c4bffaf0c4f543f1e7988","IPY_MODEL_764b5c3184624ac6ad6a508bcf499111"],"layout":"IPY_MODEL_8fdc1e8e09ad4e66aac2d991938f692c"}},"8c2d387ffef848a0a40aa97a09ae6176":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_1b063519edbd4faf999b53991dcd97e1","placeholder":"​","style":"IPY_MODEL_df50d4cee9904b58bc10edd66c7d83ad","value":"model-00001-of-00002.safetensors: 100%"}},"016bf58eac6c4bffaf0c4f543f1e7988":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_a346e0a95be34c6c93b40e6b0cb740a5","max":9976578928,"min":0,"orientation":"horizontal","style":"IPY_MODEL_4be69f580b7d45f6ab87c54e198b2809","value":9976578928}},"764b5c3184624ac6ad6a508bcf499111":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_7e04c02cbf7941dc95ae0f3e7396ba1c","placeholder":"​","style":"IPY_MODEL_53aa65c392b3441088bdfb11639eb0d6","value":" 9.98G/9.98G [01:27&lt;00:00, 120MB/s]"}},"8fdc1e8e09ad4e66aac2d991938f692c":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"1b063519edbd4faf999b53991dcd97e1":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"df50d4cee9904b58bc10edd66c7d83ad":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"a346e0a95be34c6c93b40e6b0cb740a5":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"4be69f580b7d45f6ab87c54e198b2809":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"7e04c02cbf7941dc95ae0f3e7396ba1c":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"53aa65c392b3441088bdfb11639eb0d6":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"ebf19cdf93d24f4bb5e0215fa5b8bf45":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_c8c2deb810ad4101b1ae62e04d659b1c","IPY_MODEL_374a475e2993478aa5f8bf0258859a82","IPY_MODEL_6cfdb64ea3544f948134f154e980b5d7"],"layout":"IPY_MODEL_f0f5424d4b3040e0868a847536f7ec9a"}},"c8c2deb810ad4101b1ae62e04d659b1c":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_6e3fb6e4963a49069034af92978604f6","placeholder":"​","style":"IPY_MODEL_81f464ab3d4b4b6596c12234df87bce9","value":"model-00002-of-00002.safetensors: 100%"}},"374a475e2993478aa5f8bf0258859a82":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_c792a588064c4964a19a7918cc2d1e80","max":3500297344,"min":0,"orientation":"horizontal","style":"IPY_MODEL_1f55a105bc534d96b78701839c66ffba","value":3500297344}},"6cfdb64ea3544f948134f154e980b5d7":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_93be13d29ea54c78b7b1f3421910f2db","placeholder":"​","style":"IPY_MODEL_30be353022804e458360b3b1463c1d94","value":" 3.50G/3.50G [00:38&lt;00:00, 63.4MB/s]"}},"f0f5424d4b3040e0868a847536f7ec9a":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"6e3fb6e4963a49069034af92978604f6":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"81f464ab3d4b4b6596c12234df87bce9":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"c792a588064c4964a19a7918cc2d1e80":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"1f55a105bc534d96b78701839c66ffba":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"93be13d29ea54c78b7b1f3421910f2db":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"30be353022804e458360b3b1463c1d94":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"419ed842a5b9430893fbca06559fc96b":{"model_module":"@jupyter-widgets/controls","model_name":"HBoxModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_2510bdd47e0d4eba84a9a9084bf8c40e","IPY_MODEL_af8485a2382e43ddbd932b3cb6c47410","IPY_MODEL_354174609e90433fb958df1701b9e394"],"layout":"IPY_MODEL_e8015006da7b4d90a7e53843e947c3d8"}},"2510bdd47e0d4eba84a9a9084bf8c40e":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_45b66f5982654ad4bd48f86ed1fbc830","placeholder":"​","style":"IPY_MODEL_160220cc72eb47d081039b4a1ef34911","value":"Loading checkpoint shards:   0%"}},"af8485a2382e43ddbd932b3cb6c47410":{"model_module":"@jupyter-widgets/controls","model_name":"FloatProgressModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"danger","description":"","description_tooltip":null,"layout":"IPY_MODEL_d04a5f69d5844c17bf5131a5152da072","max":2,"min":0,"orientation":"horizontal","style":"IPY_MODEL_560906acf9db45b9aa718bc899f1b7bb","value":0}},"354174609e90433fb958df1701b9e394":{"model_module":"@jupyter-widgets/controls","model_name":"HTMLModel","model_module_version":"1.5.0","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_0abeba85e11346b28e47e4b04c9e2580","placeholder":"​","style":"IPY_MODEL_588b144afb594626b87643e1cc8cceed","value":" 0/2 [00:01&lt;?, ?it/s]"}},"e8015006da7b4d90a7e53843e947c3d8":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"45b66f5982654ad4bd48f86ed1fbc830":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"160220cc72eb47d081039b4a1ef34911":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"d04a5f69d5844c17bf5131a5152da072":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"560906acf9db45b9aa718bc899f1b7bb":{"model_module":"@jupyter-widgets/controls","model_name":"ProgressStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"0abeba85e11346b28e47e4b04c9e2580":{"model_module":"@jupyter-widgets/base","model_name":"LayoutModel","model_module_version":"1.2.0","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"588b144afb594626b87643e1cc8cceed":{"model_module":"@jupyter-widgets/controls","model_name":"DescriptionStyleModel","model_module_version":"1.5.0","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}}}
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
